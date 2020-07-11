@@ -1,0 +1,14 @@
+{
+    "prefix": "!",
+    "operators": [
+        "OPERATOR ID"
+    ],
+    "servers": [
+        {
+            "name": "SERVER NAME",
+            "id": "SERVER ID",
+            "SERVER CHANNEL 1": "SERVER CHANNEL 1 ID",
+            "SERVER CHANNEL 2": "SERVER CHANNEL 2 ID"
+        }
+    ]
+}
