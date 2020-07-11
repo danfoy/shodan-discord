@@ -1,0 +1,7 @@
+node_modules/
+Resources/
+.env
+config.json
+
+*.DS_Store
+*.ds_store
