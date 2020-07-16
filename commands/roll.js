@@ -54,9 +54,13 @@ function roll(message, args) {
 
         let matches = [];
 
+        // Loop through each roster entry
         for (let i = 0; i < embed.fields.length; i++) {
 
+            // Default value for player to stop errors on remarks
             let player = embed.fields[i].value;
+            // Trim newline from player variable
+            player = player.replace('\n\u200b', '');
 
             const remarks = {
                 'Wraith': `Stay sweaty ${player}`,
@@ -66,10 +70,13 @@ function roll(message, args) {
                 'Bloodhound': `May the gods bless ${player} in slatra`
             };
 
+            // Match legends with remarks
             for (let [legend, remark] of Object.entries(remarks)) {
                 legend = `**${legend}**`;
                 if (legend == embed.fields[i].name) {
-                    player = embed.fields[i].value;
+                    player = embed.fields[i].value.toString();
+                    // Trim newline from player variable
+                    player = player.replace('\n\u200b', '');
                     matches.push(remark);
                 };
             };
