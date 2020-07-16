@@ -1,0 +1,14 @@
+[Unit]
+Description=Discord bot
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+User=shodan-discord
+ExecStart=cd /home/danfoy/shodan-discord; npm run deploy
+
+[Install]
+WantedBy=multi-user.target
