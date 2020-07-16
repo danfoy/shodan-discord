@@ -12,27 +12,51 @@ module.exports = {
 }
 
 const { legends }       = require('../data/legends.json');
-const { reply, hr }     = require('../utils.js')
-
+const { reply, hr }     = require('../utils.js');
+const Discord       = require('discord.js');
 
 function roll(message, args) {
 
-    function generateRoster(squadSize) {
+    const embedObj = new Discord.MessageEmbed();
 
+    function generateRoster(squadSize, embed) {
+
+        embed.setColor('RED');
+        embed.setTitle(`__**Your randomised ${args[0]}:**__\n\u200b`);
+
+        // Assign player names if available
         let players = [];
-        players[0] = args[1] ? message.author.username : "Player 1";
+        players[0] = `<@${message.author.id}>`;
         players[1] = args[1] || "Player 2";
         players[2] = args[2] || "Player 3";
 
+        // Get (clone) array of available legends
         let availableLegends = [].concat(legends);
+
+        // Prepare roster array
         let roster = [];
 
+        // Randomise squadSize number of legegends to roster array
         for (let i = 0; i < squadSize; i++) {
             const randomIndex = Math.floor(Math.random() * availableLegends.length);
             roster.push(availableLegends.splice(randomIndex, 1));
-        }
+        };
 
-        function generateQuip(legend, player) {
+        for (let i = 0; i < squadSize; i++) {
+            embed.addField(`**${roster[i]}**`, `${players[i]}\n\u200b`, true);
+        };
+
+        return embed;
+    }
+
+    // Return a random quip or false
+    function generateQuip(embed) {
+
+        let matches = [];
+
+        for (let i = 0; i < embed.fields.length; i++) {
+
+            let player = embed.fields[i].value;
 
             const remarks = {
                 'Wraith': `Stay sweaty ${player}`,
@@ -42,45 +66,29 @@ function roll(message, args) {
                 'Bloodhound': `May the gods bless ${player} in slatra`
             };
 
-            let output = '';
-
-            for (const [selection, remark] of Object.entries(remarks)) {
-                if (selection == legend) {
-                    output = remark;
+            for (let [legend, remark] of Object.entries(remarks)) {
+                legend = `**${legend}**`;
+                if (legend == embed.fields[i].name) {
+                    player = embed.fields[i].value;
+                    matches.push(remark);
                 };
             };
-
-            return output;
-        }
-
-        let quips = [];
-
-        for (let i = 0; i < roster.length; i++) {
-            const quip = generateQuip(roster[i], players[i]);
-            if (quip) {
-                quips.push(quip);
-            };
         };
 
-        if (quips[0] && squadSize > 1) {
-            roster.push(hr());
-            roster.push(quips[0]);
-        };
-
-        if (squadSize > 1) {
-            for (let i = 0; i < squadSize; i++) {
-                roster[i] = `**${players[i]}:** ${roster[i]}`;
-            }
-        };
-
-        return roster;
-    }
+        return matches[0] || false;
+    };
 
 
     let format = args[0] ? args[0].toLowerCase() : "dice";
-    let data = [];
+    let quip = false;
 
     switch (format) {
+
+        case "test":
+            generateRoster(3, embedObj);
+            message.channel.send(embedObj);
+            quip = generateQuip(embedObj);
+            break;
 
         case "legends":
         case "squads":
@@ -88,33 +96,38 @@ function roll(message, args) {
         case "team":
         case "trios":
         case "trio":
-            reply(message, hr("thick"));
-            reply(message, `__**Your randomised squad:**__`);
-            reply(message, generateRoster(3));
-            reply(message, hr("thick"));
+            generateRoster(3, embedObj);
+            message.channel.send(embedObj);
+            quip = generateQuip(embedObj);
             break;
 
         case "duos":
         case "duo":
-            reply(message, hr("thick"));
-            reply(message, `__**Your randomised duos:**__`);
-            reply(message, generateRoster(2));
-            reply(message, hr("thick"));
+            generateRoster(2, embedObj);
+            message.channel.send(embedObj);
+            quip = generateQuip(embedObj);
             break;
 
         case "solos":
         case "solo":
         case "legend":
-            reply(message, hr("thick"));
-            reply(message, [`__**Play as:**__ ${generateRoster(1)}`]);
-            reply(message, hr("thick"));
+            generateRoster(1, embedObj);
+            message.channel.send(embedObj);
+            quip = generateQuip(embedObj);
             break;
 
         case "dice":
             function rollDice(sides = 6) {
                 return Math.floor((Math.random() * sides) + 1);
             }
-            reply(message, `You rolled ${rollDice(args[1])}`);
+            reply(message, `<@${message.author.id}> rolled ${rollDice(args[1])}`);
             break;
     }
+
+    // Send quips if there are any
+    if (quip) message.channel.send(quip);
+
+    // Clean up original command
+    message.delete();
+
 }
