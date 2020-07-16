@@ -8,7 +8,7 @@ Type=simple
 Restart=always
 RestartSec=1
 User=shodan-discord
-ExecStart=cd /home/danfoy/shodan-discord; npm run deploy
+ExecStart=/usr/bin/npm run deploy --prefix /home/danfoy/shodan-discord
 
 [Install]
 WantedBy=multi-user.target
