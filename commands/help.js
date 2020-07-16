@@ -6,38 +6,58 @@ module.exports = {
     execute: man
 };
 
-const { prefix }          = require('../config.json');
-const { getCommand, hr }  = require('../utils.js')
+const Discord           = require('discord.js');
+const { prefix }        = require('../config.json');
+const { getCommand }    = require('../utils.js')
 
 function man(message, args) {
 
     const { commands } = message.client;
+    const embedObj     = new Discord.MessageEmbed();
+
+    embedObj.setColor('GREEN');
 
     // Return list of commands if used without arguments
     if( !args.length ) {
-        message.channel.send(
-            `${hr("thick")}\n` +
-            `**Available commands:** \`${commands.map(command => command.name).join('`, `')}\`\n` +
-            `*Use* \`${prefix}help [command]\` *for help on specific commands*\n` +
-            `${hr("thick")}`);
-        return;
+
+        embedObj.setTitle('**Available commands:**');
+
+        commands.map(command => {
+            if (command.aliases) {
+                embedObj.addField(
+                    `__**\`${prefix + command.name}\`**__ (or \`${command.aliases.join('`, `')}\`)`,
+                    `*${command.description}*\n\u200b`
+                );
+            } else {
+                embedObj.addField(
+                    `__**\`${prefix + command.name}\`**__`,
+                    `${command.description}\n\u200b`
+                );
+            }
+        });
+
+        embedObj.setFooter(`Type ${prefix}help [command] for help on specific commands`);
+
+        return message.channel.send(embedObj);
     };
 
     const command = getCommand(message.client, args[0]);
-    let data = [hr("thick")]
 
     const aliases = command.aliases ?
-                        ' (or `' + command.aliases.join('`, `') + '`)' :
+                        ` (or \`${command.aliases.join('\`, \`')}\`)` :
                         '';
 
-    data.push(`\`${prefix + command.name}\`` + aliases);
-    data.push(hr());
+    embedObj.setTitle(`\`${prefix + command.name}\`` + aliases);
+    if (command.description) embedObj.setDescription(command.description);
+    if (command.usage) embedObj.addField('Usage', `${command.usage}`);
 
-    if (command.description)    data.push(`*${command.description}*`);
-    if (command.usage)          data.push(`\n**Usage:**\n${command.usage}`);
 
-    data.push(hr("thick"));
+    // data.push(`\`${prefix + command.name}\`` + aliases);
+    // data.push(hr());
 
-    message.channel.send(data);
+    // if (command.description)    data.push(`*${command.description}*`);
+    // if (command.usage)          data.push(`\n**Usage:**\n${command.usage}`);
+
+    message.channel.send(embedObj);
 
 }
