@@ -87,17 +87,16 @@ function roll(message, args) {
         return matches[0] || false;
     };
 
+    function sendEmbed(squadSize, embedObj) {
+        generateRoster(squadSize, embedObj);
+        message.channel.send(embedObj);
+        let quip = generateQuip(embedObj);
+        if (quip) message.channel.send(quip);
+    }
 
-    let format = args[0] ? args[0].toLowerCase() : "dice";
-    let quip = false;
+    let format = args[0].toLowerCase();
 
     switch (format) {
-
-        case "test":
-            generateRoster(3, embedObj);
-            message.channel.send(embedObj);
-            quip = generateQuip(embedObj);
-            break;
 
         case "legends":
         case "squads":
@@ -105,29 +104,20 @@ function roll(message, args) {
         case "team":
         case "trios":
         case "trio":
-            generateRoster(3, embedObj);
-            message.channel.send(embedObj);
-            quip = generateQuip(embedObj);
+            sendEmbed(3, embedObj);
             break;
 
         case "duos":
         case "duo":
-            generateRoster(2, embedObj);
-            message.channel.send(embedObj);
-            quip = generateQuip(embedObj);
+            sendEmbed(2, embedObj);
             break;
 
         case "solos":
         case "solo":
         case "legend":
-            generateRoster(1, embedObj);
-            message.channel.send(embedObj);
-            quip = generateQuip(embedObj);
+            sendEmbed(1, embedObj);
             break;
     }
-
-    // Send quips if there are any
-    if (quip) message.channel.send(quip);
 
     // Clean up original command
     message.delete();
