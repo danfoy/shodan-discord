@@ -2,9 +2,12 @@ module.exports = {
     name: 'apex',
     aliases: ['legends'],
     description: 'Generate a randomized Apex Legends squad',
-    usage: `\`[squad type]\` (req) \`[teammate 1]\` (opt) \`[teammate 2]\` (opt) \n` +
-           `Squad type followed by the names of your teammates (tagging works well)\n\u200b\n` +
-           `Squad type can be any of the following:\n` +
+    usage: `\`[squad type]\` (opt) \`[teammate(s)]\` (opt)\n` +
+           `Default: generate one legend.\n` +
+           `Tag or name up to two other players and I will work out the squad size myself.\n` +
+           `Alternatively use a squad type keyword as the first option, and I will autofill ` +
+           `any empty slots for you.\n\u200b\n` +
+           `Squad type keyword can be any of the following:\n` +
            '- `squads`, or `squad`, `legends`, `team`, `trios`, `trio`\n' +
            '- `duos` or `duo`\n' +
            '- `solo` or `legend`, `solos`\n\u200b\n' +
@@ -20,16 +23,22 @@ function roll(message, args) {
 
     const embedObj = new Discord.MessageEmbed();
 
-    function generateRoster(squadSize, embed) {
+    function generateRoster(squadSize, embed, playerOne = false) {
 
         embed.setColor('RED');
-        embed.setTitle(`__**Your randomised ${args[0]}:**__\n\u200b`);
+        embed.setTitle(`__**Your randomised ${squadSize > 1 ? 'legends' : 'legend'}:**__\n\u200b`);
 
         // Assign player names if available
         let players = [];
-        players[0] = `<@${message.author.id}>`;
-        players[1] = args[1] || "Player 2";
-        players[2] = args[2] || "Player 3";
+        if (playerOne) {
+            players[0] = playerOne;
+            players[1] = args[1] || "Player 2";
+            players[2] = args[2] || "Player 3";
+        } else {
+            players[0] = `<@${message.author.id}>`;
+            players[1] = args[0] || "Player 2";
+            players[2] = args[1] || "Player 3";
+        }
 
         // Get (clone) array of available legends
         let availableLegends = [].concat(legends);
@@ -87,36 +96,82 @@ function roll(message, args) {
         return matches[0] || false;
     };
 
-    function sendEmbed(squadSize, embedObj) {
-        generateRoster(squadSize, embedObj);
+    function sendEmbed(squadSize, embedObj, playerOne = false) {
+        generateRoster(squadSize, embedObj, playerOne);
         message.channel.send(embedObj);
         let quip = generateQuip(embedObj);
         if (quip) message.channel.send(quip);
     }
 
-    let format = args[0].toLowerCase();
+    /**
+     * Keywork mode logic
+     *
+     * Command supports being invoked by a keyword. This allows invocation
+     * without providing player names - placeholder values are used if
+     * an insufficient number of players are tagged.
+     */
 
-    switch (format) {
+    // Prepare keywords
+    const trios = ['legends', 'squads', 'squad', 'team', 'trios', 'trio'];
+    const duos  = ['duos', 'duo'];
+    const solos = ['solos', 'solo', 'legend'];
 
-        case "legends":
-        case "squads":
-        case "squad":
-        case "team":
-        case "trios":
-        case "trio":
-            sendEmbed(3, embedObj);
-            break;
+    // Normalised keyword placeholder
+    const format = args[0] ? args[0].toLowerCase() : false;
 
-        case "duos":
-        case "duo":
-            sendEmbed(2, embedObj);
-            break;
+    // Trios keyword mode
+    if (trios.includes(format)) {
+        args.shift();
+        if (args[2]) return sendEmbed(3, embedObj, args[1]);
+        return sendEmbed(3, embedObj);
+    };
 
-        case "solos":
-        case "solo":
-        case "legend":
-            sendEmbed(1, embedObj);
-            break;
-    }
+    // Duos keyword mode
+    if (duos.includes(format)) {
+        args.shift();
+        if (args[1]) return sendEmbed(2, embedObj, args[1]);
+        return sendEmbed(2, embedObj);
+    };
+
+    // Solos keyword mode
+    if (solos.includes(format)) {
+        args.shift();
+        if (args[0]) return sendEmbed(1, embedObj, args[1]);
+        return sendEmbed(1, embedObj);
+    };
+
+    /**
+     * Computed mode logic
+     *
+     * If there are no keyword arguments, infer the squad type from the
+     * number of arguments in the command.
+     */
+
+    // Error - more than 3 squad members (including invoking user)
+    if (args[3]) {
+        return reply(message, 'How am I supposed to generate a squad with more than 3 members? Moron. RTFM.');
+    };
+
+    // Implied Trios, explicit playerOne mode
+    if (args[2]) {
+        reply(message,"implied trios, explicit p1");
+        return sendEmbed(3, embedObj, args[0]);
+    };
+
+    // Implied Trios mode
+    if (args[1]) {
+        reply(message,"implied trios");
+        return sendEmbed(3, embedObj);
+    };
+
+    // Implied Duos mode
+    if (args[0]) {
+        reply(message,"implied duos");
+        return sendEmbed(2, embedObj);
+    };
+
+    // Default - Solos mode
+    reply(message,"implied solo");
+    return sendEmbed(1, embedObj);
 
 }
