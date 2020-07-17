@@ -64,7 +64,7 @@ function roll(message, args) {
             player = player.replace('\n\u200b', '');
 
             const remarks = {
-                'Wraith': `Stay sweaty ${player}`,
+                'Wraith': `Stay sweaty ${player}_TTV`,
                 'Crypto': `Haha get rekt ${player}`,
                 'Wattson': `Make your father proud, ${player}`,
                 'Pathfinder': `Don't waste time looking for your maker, ${player}. There are no other gods up here but me.`,
