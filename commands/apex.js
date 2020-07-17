@@ -119,7 +119,4 @@ function roll(message, args) {
             break;
     }
 
-    // Clean up original command
-    message.delete();
-
 }
