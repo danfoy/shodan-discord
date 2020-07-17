@@ -154,24 +154,20 @@ function roll(message, args) {
 
     // Implied Trios, explicit playerOne mode
     if (args[2]) {
-        reply(message,"implied trios, explicit p1");
         return sendEmbed(3, embedObj, args[0]);
     };
 
     // Implied Trios mode
     if (args[1]) {
-        reply(message,"implied trios");
         return sendEmbed(3, embedObj);
     };
 
     // Implied Duos mode
     if (args[0]) {
-        reply(message,"implied duos");
         return sendEmbed(2, embedObj);
     };
 
     // Default - Solos mode
-    reply(message,"implied solo");
     return sendEmbed(1, embedObj);
 
 }
