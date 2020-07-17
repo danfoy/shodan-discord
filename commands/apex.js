@@ -67,8 +67,8 @@ function roll(message, args) {
                 'Wraith': `Stay sweaty ${player}_TTV`,
                 'Crypto': `Haha get rekt ${player}`,
                 'Wattson': `Make your father proud, ${player}`,
-                'Pathfinder': `Don't waste time looking for your maker, ${player}. There are no other gods up here but me.`,
-                'Bloodhound': `May the gods bless ${player} in slatra`,
+                'Pathfinder': `You won't find your maker, ${player}. I see no other gods up here but me.`,
+                'Bloodhound': `May the Allfather bless ${player} in slatra`,
                 'Revenant': `Bring me their skinsuits, ${player}`
             };
 
