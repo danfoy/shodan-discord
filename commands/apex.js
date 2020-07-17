@@ -68,7 +68,8 @@ function roll(message, args) {
                 'Crypto': `Haha get rekt ${player}`,
                 'Wattson': `Make your father proud, ${player}`,
                 'Pathfinder': `Don't waste time looking for your maker, ${player}. There are no other gods up here but me.`,
-                'Bloodhound': `May the gods bless ${player} in slatra`
+                'Bloodhound': `May the gods bless ${player} in slatra`,
+                'Revenant': `Bring me their skinsuits, ${player}`
             };
 
             // Match legends with remarks
