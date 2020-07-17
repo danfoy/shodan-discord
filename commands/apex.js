@@ -1,5 +1,6 @@
 module.exports = {
     name: 'apex',
+    aliases: ['legends'],
     description: 'Generate a randomized Apex Legends squad',
     usage: `\`[squad type]\` (req) \`[teammate 1]\` (opt) \`[teammate 2]\` (opt) \n` +
            `Squad type followed by the names of your teammates (tagging works well)\n\u200b\n` +
