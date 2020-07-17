@@ -15,9 +15,8 @@ module.exports = {
     execute: roll
 }
 
-const { legends }       = require('../data/legends.json');
-const { reply, hr }     = require('../utils.js');
-const Discord       = require('discord.js');
+const { legends }   = require('../data/legends.json');
+const   Discord     = require('discord.js');
 
 function roll(message, args) {
 
@@ -149,7 +148,7 @@ function roll(message, args) {
 
     // Error - more than 3 squad members (including invoking user)
     if (args[3]) {
-        return reply(message, 'How am I supposed to generate a squad with more than 3 members? Moron. RTFM.');
+        return message.channel.send('How am I supposed to generate a squad with more than 3 members? Moron. RTFM.');
     };
 
     // Implied Trios, explicit playerOne mode
