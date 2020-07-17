@@ -25,7 +25,7 @@ function roll(message, args) {
 
     function generateRoster(squadSize, embed, playerOne = false) {
 
-        embed.setColor('RED');
+        embed.setColor('#fcba03');
         embed.setTitle(`__**Your randomised ${squadSize > 1 ? 'legends' : 'legend'}:**__\n\u200b`);
 
         // Assign player names if available
