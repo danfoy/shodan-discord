@@ -2,16 +2,26 @@ module.exports = {
     name: 'apex',
     aliases: ['legends'],
     description: 'Generate a randomized Apex Legends squad',
-    usage: `\`[squad type]\` (opt) \`[teammate(s)]\` (opt)\n` +
-           `Default: generate one legend.\n` +
-           `Tag or name up to two other players and I will work out the squad size myself.\n` +
-           `Alternatively use a squad type keyword as the first option, and I will autofill ` +
-           `any empty slots for you.\n\u200b\n` +
-           `Squad type keyword can be any of the following:\n` +
-           '- `squads`, or `squad`, `legends`, `team`, `trios`, `trio`\n' +
-           '- `duos` or `duo`\n' +
-           '- `solo` or `legend`, `solos`\n\u200b\n' +
-           `e.g. \`!apex squad wraith_ttv gamer420\`\n`,
+    options:
+        `\`[squad type]\` (optional)\n` +
+        `\`[teammate(s)]\` (optional) teammate names or tags, space-separated\n`,
+    usage:
+        `Tag or name up to two other players and I will work out the squad size myself, ` +
+        `using you as the first player by default. ` +
+        `Alternatively use a squad type keyword as the first option, and I will autofill ` +
+        `any empty slots for you. You can also use this mode to generate squads for ` +
+        `other players, excluding yourself from the lineup.\n\u200b\n` +
+        `Squad type keyword can be any of the following:\n` +
+        '- `squads`, or `squad`, `legends`, `team`, `trios`, `trio`\n' +
+        '- `duos` or `duo`\n' +
+        '- `solo` or `legend`, `solos`',
+    examples:
+        '`!apex squad wraith_ttv gamer420`\n' +
+        'Generate a 3-player squad for you, `wraith_ttv`, and `gamer420`.\n' +
+        '`!apex solo Anakin`\n' +
+        'Generates a solo squad for player `Anakin`',
+    default:
+        'Generate one random legend',
     execute: roll
 }
 

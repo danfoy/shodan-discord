@@ -1,9 +1,10 @@
 module.exports = {
     name: 'ping',
     description: 'Make me talk on command like some kind of perfoming animal. Originally written to test functionality, now mainly used for flavour.',
-    usage: `**1:** \`[list]\` (optional) Show all available responses\n` +
-           `**2:** \`[*number*]\` (optional) Return a specific quote\n` +
-           `**Default:** Respond with a random quote`,
+    options:
+        '`list` (optional) Show all available responses\n' +
+        '`[number]` (optional) Return a specific quote\n',
+    default: 'Display a random quote.',
     aliases: ['quote'],
     execute: quote
 }

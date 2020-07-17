@@ -1,7 +1,7 @@
 module.exports = {
     name: 'prune',
     description: 'Delete a specified number of messages from the server',
-    usage: '<number> (between 2 and 99)',
+    options: '`[number]` (between 2 and 99) posts to delete',
     aliases: ['purge', 'delete', 'del', 'clear'],
     args: true,
     operator: true,

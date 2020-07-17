@@ -1,7 +1,15 @@
 module.exports = {
     name: 'help',
     description: 'Displays a list of commands or information on a specific command',
-    usage: '[command] (optional) specific command. Displays list of all commands if ommitted.',
+    options: '`command` (optional) specific command',
+    usage:
+        'Learn how to use Shodan commands. Use by itself to list all ' +
+        'commands, or add the command you wish to see the manual for.',
+    examples:
+        '`!help`\nList all commands\n' +
+        '`!help help`\nShow manual for the help command itself\n' +
+        '`!help roll`\nShow manual for the roll command\n',
+    default: 'List all available commands',
     aliases: ['man'],
     execute: man
 };
@@ -47,9 +55,12 @@ function man(message, args) {
                         ` (or \`${command.aliases.join('\`, \`')}\`)` :
                         '';
 
-    embedObj.setTitle(`\`${prefix + command.name}\`` + aliases);
+    embedObj.setTitle(`__\`${prefix + command.name}\`` + aliases + '__');
     if (command.description) embedObj.setDescription(command.description);
-    if (command.usage) embedObj.addField('Usage', `${command.usage}`);
+    if (command.options) embedObj.addField('**Options:**', command.options);
+    if (command.usage) embedObj.addField('**Usage:**', command.usage);
+    if (command.examples) embedObj.addField('**Examples:**', command.examples);
+    if (command.default) embedObj.addField('**Default:**', command.default);
 
 
     // data.push(`\`${prefix + command.name}\`` + aliases);
