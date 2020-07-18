@@ -11,7 +11,7 @@ module.exports = {
 
 function quote(message, args) {
 
-    let user = message.author.username;
+    const user = `<@${message.author.id}>`;
 
     // List of quotes to pull from
     let quotes = [
@@ -30,7 +30,7 @@ function quote(message, args) {
     ];
 
     // Speak a random quote
-    if (!args.length) {
+    if (!args) {
         return message.channel.send(quotes[Math.floor(Math.random() * quotes.length)])
             .catch(error => console.error(error));
     };

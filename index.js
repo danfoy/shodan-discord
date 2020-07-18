@@ -28,6 +28,12 @@ client.once('ready', () => {
 // Listen for commands
 client.on('message', (message) => {
 
+    // React with ping command if pinged
+    if (!message.content.startsWith(prefix) && message.mentions.has(client.user)) {
+        const ping = getCommand(client, 'ping');
+        return ping.execute(message);
+    };
+
     // Ignore messages without prefix or from other bots
     if (!message.content.startsWith(prefix) || message.author.bot) return;
 
