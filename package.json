@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "version": "conventional-changelog -p angular -i CHANGELOG.md -s && git add CHANGELOG.md",
     "deploy": "nodemon index.js"
   },
   "author": "Dan Foy",
@@ -13,7 +14,12 @@
     "discord.js": "^12.2.0",
     "dotenv": "^8.2.0"
   },
+  "release": {
+    "ci": false
+  },
   "devDependencies": {
-    "nodemon": "^2.0.3"
+    "conventional-changelog-cli": "^2.0.34",
+    "nodemon": "^2.0.3",
+    "semantic-release": "^17.1.1"
   }
 }
