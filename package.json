@@ -6,7 +6,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "version": "conventional-changelog -p angular -i CHANGELOG.md -s && git add CHANGELOG.md",
+    "version": "standard-version",
     "deploy": "nodemon index.js"
   },
   "author": "Dan Foy",
@@ -15,17 +15,41 @@
     "discord.js": "^12.2.0",
     "dotenv": "^8.2.0"
   },
-  "semantic-release": {
+  "standard-version": {
     "header": "# Changelog",
     "types": [
-      {"type": "feat", "section": "Features"},
-      {"type": "fix", "section": "Bug Fixes"},
-      {"type": "chore", "section": "Plumbing", "hidden": true},
-      {"type": "docs", "section": "Plumbing"},
-      {"type": "style", "section": "Plumbing"},
-      {"type": "refactor", "section": "Plumbing"},
-      {"type": "perf", "section": "Plumbing"},
-      {"type": "test", "section": "Plumbing"}
+      {
+        "type": "feat",
+        "section": "Features"
+      },
+      {
+        "type": "fix",
+        "section": "Bug Fixes"
+      },
+      {
+        "type": "build",
+        "section": "Plumbing"
+      },
+      {
+        "type": "docs",
+        "section": "Plumbing"
+      },
+      {
+        "type": "style",
+        "section": "Plumbing"
+      },
+      {
+        "type": "refactor",
+        "section": "Plumbing"
+      },
+      {
+        "type": "perf",
+        "section": "Plumbing"
+      },
+      {
+        "type": "test",
+        "section": "Plumbing"
+      }
     ]
   },
   "release": {
@@ -34,6 +58,6 @@
   "devDependencies": {
     "conventional-changelog-cli": "^2.0.34",
     "nodemon": "^2.0.3",
-    "semantic-release": "^17.1.1"
+    "standard-version": "^8.0.2"
   }
 }
