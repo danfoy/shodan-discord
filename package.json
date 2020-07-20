@@ -40,9 +40,6 @@
               "BREAKING",
               "BREAKS"
             ]
-          },
-          "writerOpts": {
-            "groupBy": "section"
           }
         }
       ]
