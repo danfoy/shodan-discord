@@ -2,6 +2,7 @@
   "name": "shodan",
   "version": "0.1.0",
   "description": "Discord and home automation bot",
+  "repository": "https://github.com/danfoy/shodan-discord",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
