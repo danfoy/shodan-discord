@@ -9,7 +9,7 @@ module.exports = {
     execute: quote
 }
 
-function quote(message, args) {
+function quote(message, args = []) {
 
     const user = `<@${message.author.id}>`;
 
@@ -29,7 +29,7 @@ function quote(message, args) {
     ];
 
     // Speak a random quote
-    if (!args) {
+    if (!args[0]) {
         return message.channel.send(quotes[Math.floor(Math.random() * quotes.length)])
             .catch(error => console.error(error));
     };
