@@ -54,7 +54,10 @@ client.once('ready', () => {
 client.on('message', (message) => {
 
     // React with ping command if pinged
-    if (!message.content.startsWith(prefix) && message.mentions.has(client.user)) {
+    if (    !message.content.startsWith(prefix)
+            && message.mentions.has(client.user)
+            && message.author != client.user ){
+
         const ping = getCommand(client, 'ping');
         return ping.execute(message);
     };
