@@ -26,9 +26,10 @@ module.exports = {
 }
 
 const { legends }   = require('../data/legends.json');
+const { sendMessage } = require('../utils.js');
 const   Discord     = require('discord.js');
 
-function roll(message, args) {
+function roll(context, args = [], type, target) {
 
     const embedObj = new Discord.MessageEmbed();
 
@@ -44,7 +45,7 @@ function roll(message, args) {
             players[1] = args[1] || "Player 2";
             players[2] = args[2] || "Player 3";
         } else {
-            players[0] = `<@${message.author.id}>`;
+            players[0] = `<@${context.author.id}>`;
             players[1] = args[0] || "Player 2";
             players[2] = args[1] || "Player 3";
         }
@@ -107,9 +108,9 @@ function roll(message, args) {
 
     function sendEmbed(squadSize, embedObj, playerOne = false) {
         generateRoster(squadSize, embedObj, playerOne);
-        message.channel.send(embedObj);
+        sendMessage(context, type, target, embedObj);
         let quip = generateQuip(embedObj);
-        if (quip) message.channel.send(quip);
+        if (quip) sendMessage(context, type, target, quip);
     }
 
     /**
@@ -158,7 +159,7 @@ function roll(message, args) {
 
     // Error - more than 3 squad members (including invoking user)
     if (args[3]) {
-        return message.channel.send('How am I supposed to generate a squad with more than 3 members? Moron. RTFM.');
+        return sendMessage(context, type, target, 'How am I supposed to generate a squad with more than 3 members? Moron. RTFM.');
     };
 
     // Implied Trios, explicit playerOne mode

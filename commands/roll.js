@@ -10,10 +10,12 @@ module.exports = {
     execute: roll
 }
 
-function roll(message, args) {
+const { sendMessage } = require('../utils.js');
+
+function roll(context, args = [], type, target) {
 
     if (args[0] && ! parseInt(args[0])) {
-        return message.channel.send(`Digits only please <@${message.author.id}>, rtfm`);
+        return sendMessage(context, type, target, `Digits only please <@${message.author.id}>, rtfm`);
     };
 
     const sides = parseInt(args[0]) ? args[0] : 6;
@@ -23,6 +25,5 @@ function roll(message, args) {
     };
 
 
-    message.channel.send(`<@${message.author.id}> rolled ${rollDice(sides)}`);
-    message.delete();
+    sendMessage(context, type, target, `<@${context.author.id}> rolled ${rollDice(sides)}`);
 }

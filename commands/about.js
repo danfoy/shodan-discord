@@ -5,10 +5,10 @@ module.exports = {
     execute: about
 }
 
-const { reply, hr, parseSeconds } = require('../utils.js');
+const { sendMessage, hr, parseSeconds } = require('../utils.js');
 const os                          = require('os');
 
-function about(message) {
+function about(context, args = [], type, target) {
 
     let data = [];
 
@@ -62,5 +62,5 @@ function about(message) {
         `For now.`
     );
 
-    reply(message, data);
+    sendMessage(context, type, target, data);
 }

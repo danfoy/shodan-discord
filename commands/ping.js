@@ -9,9 +9,11 @@ module.exports = {
     execute: quote
 }
 
-function quote(message, args = []) {
+const { sendMessage } = require('../utils.js')
 
-    const user = `<@${message.author.id}>`;
+function quote(context, args = [], type, target) {
+
+    const user = `<@${context.author.id}>`;
 
     // List of quotes to pull from
     let quotes = [
@@ -30,25 +32,22 @@ function quote(message, args = []) {
 
     // Speak a random quote
     if (!args[0]) {
-        return message.channel.send(quotes[Math.floor(Math.random() * quotes.length)])
-            .catch(error => console.error(error));
+        return sendMessage(context, type, target, quotes[Math.floor(Math.random() * quotes.length)]);
     };
 
     // List all quotes
     if (args[0] === "list") {
-        allQuotes = [`__**All available quotes:**__`];
+        let allQuotes = [`__**All available quotes:**__`];
         for (let i in quotes) {
             allQuotes.push(`**${i}:** ${quotes[i]}`);
         }
-        return message.channel.send(allQuotes, {split: true})
-            .catch(error => console.error(error));
+        return sendMessage(context, type, target, allQuotes, true);
     };
 
     // Speak a specific quote
     if (typeof parseInt(args[0]) === 'number') {
-        return message.channel.send(quotes[args[0]])
-            .catch(error => console.error(error));
+        return sendMessage(context, type, target, quotes[args[0]]);
     };
 
-    message.channel.send(`Invalid quote`);
+    sendMessage(context, target, type, 'Invalid quote');
 };

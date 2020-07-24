@@ -16,11 +16,11 @@ module.exports = {
 
 const Discord           = require('discord.js');
 const { prefix }        = require('../config.json');
-const { getCommand }    = require('../utils.js')
+const { getCommand, sendMessage }    = require('../utils.js')
 
-function man(message, args) {
+function man(context, args = [], type, target) {
 
-    const { commands } = message.client;
+    const { commands } = context.client;
     const embedObj     = new Discord.MessageEmbed();
 
     embedObj.setColor('GREEN');
@@ -46,10 +46,10 @@ function man(message, args) {
 
         embedObj.setFooter(`Type ${prefix}help [command] for help on specific commands`);
 
-        return message.channel.send(embedObj);
+        return sendMessage(context, type, target, embedObj);
     };
 
-    const command = getCommand(message.client, args[0]);
+    const command = getCommand(context.client, args[0]);
 
     const aliases = command.aliases ?
                         ` (or \`${command.aliases.join('\`, \`')}\`)` :
@@ -69,6 +69,6 @@ function man(message, args) {
     // if (command.description)    data.push(`*${command.description}*`);
     // if (command.usage)          data.push(`\n**Usage:**\n${command.usage}`);
 
-    message.channel.send(embedObj);
+    sendMessage(context, type, target, embedObj);
 
 }

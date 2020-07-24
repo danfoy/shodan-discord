@@ -8,20 +8,22 @@ module.exports = {
     execute: prune
 }
 
-function prune(message, args) {
+const { sendMessage } = require('../utils.js');
+
+function prune(context, args = [], type, target) {
     const amount = parseInt(args[0]) + 1;   // Include command message
 
     if (isNaN(amount)) {
-        message.channel.send(`Invalid number of messages to prune`);
+        sendMessage(context, type, target, `Invalid number of messages to prune`);
         return;
     } else if (amount <= 1 || amount > 100) {
-        message.channel.send('Number must be between 1 and 99');
+        sendMessage(context, type, target, 'Number must be between 1 and 99');
         return;
     };
 
-    message.channel.bulkDelete(amount, true)
+    context.channel.bulkDelete(amount, true)
         .catch((error) => {
             console.error(error);
-            message.channel.send('Unable to prune messages');
+            sendMessage(context, type, target, 'Unable to prune messages');
         });
 }

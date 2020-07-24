@@ -12,9 +12,10 @@ module.exports = {
 const fs = require('fs');
 const util = require('util');
 const Discord = require('discord.js');
+const { sendMessage } = require('../utils.js');
 
 
-function changelog(message, args) {
+function changelog(context, args = [], type, target) {
 
     const changelog = parseChangelog(getFile('../CHANGELOG.md'));
 
@@ -26,18 +27,18 @@ function changelog(message, args) {
             // Get the offset as a digit
             const offset = args[0].replace('-', '');
             // Send changelog embed
-            return message.channel.send(generateEmbed(changelog, offset));
+            return sendMessage(context, type, target, generateEmbed(changelog, offset));
         }
 
         // Invalid
         else {
-            return message.channel.send(`\`${args.join(' ')}\` is not a valid option. RTFM.`)
+            return sendMessage(context, type, target, `\`${args.join(' ')}\` is not a valid option. RTFM.`)
         };
 
     };
 
     // Default:
-    return message.channel.send(generateEmbed(changelog));
+    return sendMessage(context, type, target, generateEmbed(changelog));
 
 
     // Functions

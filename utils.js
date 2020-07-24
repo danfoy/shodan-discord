@@ -15,10 +15,29 @@ function getCommand(client, commandName) {
 }
 module.exports.getCommand = getCommand;
 
+/**
+ * [sendMessage description]
+ * @param  {object} context Pass in `client` or `message`
+ * @param  {string} type    `reply` or `channel`
+ * @param  {string} target  ID of channel
+ * @param  {string} content What to send
+ * @return {undefined}      Function is side-effect only
+ */
+function sendMessage(context, type = 'reply', target, content) {
 
-function reply(message, content) {
+    if (type === 'reply') {
+        return context.channel.send(content)
+            .catch(error => console.log(error));
+    };
 
+    if (type === 'channel') {
+        return context.channels.fetch(target)
+            .then(channel => channel.send(content))
+            .catch(error => console.log(error));
+    }
 }
+module.exports.sendMessage = sendMessage;
+
 /**
  * Insert a Horizontal Rule
  *

@@ -8,21 +8,22 @@ module.exports = {
 }
 
 const {servers} = require('../config.json');
+const { sendMessage } = require('../utils.js');
 
-function speak(message, args) {
+function speak(context, args = [], type, target) {
 
     const serverArg = args.shift();
 
     const server = servers.find( ({name}) => name === serverArg.toLowerCase());
     if (!server) {
-        return message.channel.send(`\`${serverArg}\` is not a recognised server`);
+        return sendMessage(context, type, target, `\`${serverArg}\` is not a recognised server`);
     }
 
     const channel = server[args.shift()];
     if (!channel) {
-        return message.channel.send(`\`${channel}\` is not a channel on \`${server.name}\``)
+        return sendMessage(context, type, target, `\`${channel}\` is not a channel on \`${server.name}\``)
     }
 
-    return message.client.channels.cache.get(channel).send(args.join(' '));
+    return context.client.channels.cache.get(channel).send(args.join(' '));
 
 }
