@@ -114,6 +114,31 @@ function roll(context, args = [], type, target) {
     }
 
     /**
+     * Argument Validation
+     *
+     * Mode logic depends on players not tagging themselves - the function
+     * will treat them as just another player. Therefore it is pertintent to
+     * strip them out of the arguments.
+     */
+    (function stripAuthor(args) {
+
+        // 0 is a valid array index, so can't use 0 as a check.
+        // Array.findIndex() returns -1 on failure. Use that instead.
+        let taxIndex = -1;
+
+        // Find index of first self-tag
+        if (args) tagIndex = args.findIndex(selfTag => selfTag.includes(context.author.id));
+
+        // Remove first self-tag from args array, else finished
+        if (tagIndex != -1) args.splice(tagIndex, 1)
+        else return;
+
+        // Run recursively until all self-tags removed
+        stripAuthor(args);
+    })(args);
+
+
+    /**
      * Keywork mode logic
      *
      * Command supports being invoked by a keyword. This allows invocation
@@ -132,21 +157,21 @@ function roll(context, args = [], type, target) {
     // Trios keyword mode
     if (trios.includes(format)) {
         args.shift();
-        if (args[2]) return sendEmbed(3, embedObj, args[1]);
+        if (args[2]) return sendEmbed(3, embedObj, args[0]);
         return sendEmbed(3, embedObj);
     };
 
     // Duos keyword mode
     if (duos.includes(format)) {
         args.shift();
-        if (args[1]) return sendEmbed(2, embedObj, args[1]);
+        if (args[1]) return sendEmbed(2, embedObj, args[0]);
         return sendEmbed(2, embedObj);
     };
 
     // Solos keyword mode
     if (solos.includes(format)) {
         args.shift();
-        if (args[0]) return sendEmbed(1, embedObj, args[1]);
+        if (args[0]) return sendEmbed(1, embedObj, args[0]);
         return sendEmbed(1, embedObj);
     };
 
