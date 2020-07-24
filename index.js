@@ -1,7 +1,9 @@
 /* dotenv */      require('dotenv').config();
 const fs        = require('fs');
 const Discord   = require('discord.js');
-const {prefix, operators}  = require('./config.json');
+const { prefix,
+        operators,
+        servers } = require('./config.json');
 const TOKEN     = process.env.TOKEN; // handled by dotenv
 
 const { getCommand } = require('./utils.js');
@@ -20,8 +22,31 @@ for (const file of commandFiles) {
 
 // Login client to Discord
 client.login(TOKEN);
+
+// Actions to perform on connection
 client.once('ready', () => {
+
+    // Log login
     console.info(`Logged into Discord as ${client.user.tag}`);
+
+    // Check when changelog was last updated
+    fs.stat(__dirname + '/CHANGELOG.md', (error, stats) => {
+        if (error) return console.error(error);
+
+        // Make changelog command available
+        const changelog = getCommand(client, 'changelog');
+        // Get time since change in seconds
+        const changelogTimer = Math.floor((new Date - stats.mtime) / 1000);
+
+        // Execute if changelog modified time < #seconds
+        if (changelogTimer < 120) {
+            // Loop through each server in config.json
+            servers.forEach( server => {
+                // Send to 'logging' value for each server
+                changelog.execute(client, [], 'channel', server.logging);
+            });
+        };
+    });
 });
 
 
