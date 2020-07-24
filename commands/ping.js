@@ -68,10 +68,17 @@ function quote(context, args = [], type, target) {
         });
     };
 
-    // Speak a specific quote
-    if (typeof parseInt(args[0]) === 'number') {
-        return sendMessage(context, type, target, quotes[args[0] - 1]);
+    // Validation on arguments that arent `list` or a number
+    if (isNaN(parseInt(args[0]))) {
+        return sendMessage(context, type, target, `\`list\` or digits only, ${user}`);
     };
 
-    sendMessage(context, target, type, 'Invalid quote');
+    // Speak a specific quote
+    if (typeof parseInt(args[0]) === 'number') {
+        //Check quote is in range
+        if (args[0] > quotes.length) return sendMessage(context, type, target,
+            `There are only ${quotes.length} options to choose from, ${user}`)
+        // Speak specific quote
+        else return sendMessage(context, type, target, quotes[args[0] - 1]);
+    };
 };
