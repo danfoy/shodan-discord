@@ -9,7 +9,9 @@ module.exports = {
     execute: quote
 }
 
-const { sendMessage } = require('../utils.js')
+const { prefix }        = require('../config.json');
+const { sendMessage }   = require('../utils.js');
+const Discord           = require('discord.js');
 
 function quote(context, args = [], type, target) {
 
@@ -37,16 +39,38 @@ function quote(context, args = [], type, target) {
 
     // List all quotes
     if (args[0] === "list") {
-        let allQuotes = [`__**All available quotes:**__`];
-        for (let i in quotes) {
-            allQuotes.push(`**${i}:** ${quotes[i]}`);
-        }
-        return sendMessage(context, type, target, allQuotes, true);
+
+        let quoteEmbeds = [];
+        currentEmbed = new Discord.MessageEmbed(),
+        currentEmbed.setColor('GREEN')
+        currentEmbed.setTitle('__**Selectable Ping Responses:**__')
+        currentEmbed.setFooter(`Page 1 of ${Math.ceil(quotes.length / 5)}`)
+
+        for (let index = 0, fieldCounter = 0, embedCounter = 1;
+            index < quotes.length;
+            index++) {
+
+            currentEmbed.addField(`**Response #${index + 1}:**`, quotes[index]);
+            fieldCounter++;
+
+            if (fieldCounter === 5 || index == quotes.length - 1 ) {
+                embedCounter++;
+                quoteEmbeds.push(currentEmbed);
+                currentEmbed = new Discord.MessageEmbed();
+                currentEmbed.setColor('GREEN');
+                currentEmbed.setFooter(`Page ${embedCounter} of ${Math.ceil(quotes.length / 5)}`)
+                fieldCounter = 0;
+            };
+        };
+
+        return quoteEmbeds.forEach(embed => {
+            sendMessage(context, type, target, embed);
+        });
     };
 
     // Speak a specific quote
     if (typeof parseInt(args[0]) === 'number') {
-        return sendMessage(context, type, target, quotes[args[0]]);
+        return sendMessage(context, type, target, quotes[args[0] - 1]);
     };
 
     sendMessage(context, target, type, 'Invalid quote');
