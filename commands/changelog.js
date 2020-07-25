@@ -204,27 +204,32 @@ function changelog(context, args = [], type, target) {
          */
         function generateDescription() {
 
+            function findSection(title) {
+                try { return version.changes.find(section => section.title === title).content.length }
+                catch { return 0 };
+            }
+
             // Get number of changes for each section
-            const features = version.changes.find(section => section.title == "Features").content.length;
-            const bugs     = version.changes.find(section => section.title == "Bug Fixes").content.length;
-            const plumbing = version.changes.find(section => section.title == "Plumbing").content.length;
+            const features = findSection('Features');
+            const bugs     = findSection('Bug Fixes');
+            const plumbing = findSection('Plumbing');
 
             // Store each section string in an array
             let output = [];
             
             // Generate desciptive text for each section
             if (features)   output.push(`${features} new or enhanced ${features > 1 ? 'features' : 'feature'}`)
-            if (bugs)       output.push(`${bugs} ${bugs > 1 ? 'patches' : 'patch'}`);
+            if (bugs)       output.push(`${bugs} ${bugs > 1 ? 'bugfixes' : 'bugfix'}`);
             if (plumbing)   output.push(`${plumbing} under-the-hood ${plumbing > 1 ? 'tweaks' : 'tweak'}`)
 
             // Add grammatical 'and' where appropriate
-            if (output.length > 2) output[output.length -1 ] = `and  ${output[output.length - 1]}`;
+            if (output.length > 1) output[output.length -1 ] = `and  ${output[output.length - 1]}`;
 
             // Squash array into a string joined by Oxford commas
-            output = output.join(', ');
+            output = output.length > 2 ? output.join(', ') : output.join(' ');
 
             // Return description with release-type introduction
-            return output = `This is a *${features ? 'feature' : 'maintenance'} release* comprised of ${output}.`;
+            return output = `This is a **${features ? 'feature' : 'maintenance'} release** comprised of ${output}.`;
         }
 
         const headerDescription = generateDescription();
@@ -232,7 +237,7 @@ function changelog(context, args = [], type, target) {
         const
         headerEmbed = new Discord.MessageEmbed();
         headerEmbed.setColor('GREEN');
-        headerEmbed.setTitle(`v${version.title}`);
+        headerEmbed.setTitle(`Shodan v${version.title}`);
         headerEmbed.setDescription(headerDescription);
         headerEmbed.setFooter(`Released on ${version.date.toLocaleDateString('en-GB', {dateStyle: 'full'})}`);
         embeds.push(headerEmbed);
