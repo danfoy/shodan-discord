@@ -19,26 +19,16 @@ function changelog(context, args = [], type, target) {
 
     const changelog = parseChangelog(getFile('../CHANGELOG.md'));
 
+    let offset = 0;
+    
     // Parse options
     if (args[0]) {
+        if (args[0].startsWith('-')) offset = args[0].replace('-', '');
+        else return sendMessage(context, type, target, `${args.join(/ +/)} is invalid usage, n00b.`);
+    }
 
-        // Offset mode
-        if(args[0].startsWith('-')) {
-            // Get the offset as a digit
-            const offset = args[0].replace('-', '');
-            // Send changelog embed
-            return sendMessage(context, type, target, generateEmbed(changelog, offset));
-        }
-
-        // Invalid
-        else {
-            return sendMessage(context, type, target, `\`${args.join(' ')}\` is not a valid option. RTFM.`)
-        };
-
-    };
-
-    // Default:
-    return sendMessage(context, type, target, generateEmbed(changelog));
+    let embedMessages = generateEmbeds(changelog, offset);
+    return embedMessages.forEach(embed => sendMessage(context, type, target, embed));
 
 
     // Functions
@@ -190,34 +180,49 @@ function changelog(context, args = [], type, target) {
      * @param  {Number} offset          Offset changelog version since most recent
      * @return {Discord.MessageEmbed}   MessageEmbed or error message
      */
-    function generateEmbed(changelog, offset = 0) {
-        const embed = new Discord.MessageEmbed();
-        const version = changelog.versions[offset];
+    function generateEmbeds(changelog, offset = 0) {
 
         // Validate offset format
         if (offset && ! parseInt(offset)) {
-            return `Offset must be in digits, n00b. Try again.`;
+            return ['Offset must be in digits, n00b. Try again.'];
         }
+        
+        const version = changelog.versions[offset];
 
         // Check this version exists
         if (!version) {
-            return `I may be a goddess, but I'm not *that* old. \n` +
-                `Maximum offset is \`-${changelog.versions.length - 1}\`. Try again.`;
+            return [
+                "I may be a goddess, but I'm not *that* old.",
+                `Maximum offset is \`-${changelog.versions.length - 1}\`. Try again.`
+            ];
         }
 
-        embed.setColor('GREEN');
-        embed.setTitle(`v${version.title}`);
-        embed.setDescription(
+        let embeds = [];
+        
+        const
+        headerEmbed = new Discord.MessageEmbed();
+        headerEmbed.setColor('GREEN');
+        headerEmbed.setTitle(`v${version.title}`);
+        headerEmbed.setFooter(
             `Released on ${version.date.toLocaleDateString('en-GB', {dateStyle: 'full'})}`
         );
+        embeds.push(headerEmbed);
 
-        for (let section = 0; section < version.changes.length; section++) {
-            embed.addField(
-                version.changes[section].title,
-                version.changes[section].content.join('\n') + '\n\u200b\n'
+        for (   let section = 0;
+                section < version.changes.length;
+                section++) {
+            
+            const
+            thisEmbed = new Discord.MessageEmbed
+            thisEmbed.setColor('GREEN');
+            thisEmbed.setTitle(version.changes[section].title);
+            thisEmbed.setDescription(
+                version.changes[section].content
+                .join('\n')
             );
-        };
 
-        return embed;
+            embeds.push(thisEmbed);
+        };
+        return embeds;
     };
 };
