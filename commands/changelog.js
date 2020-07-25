@@ -246,16 +246,53 @@ function changelog(context, args = [], type, target) {
                 section < version.changes.length;
                 section++) {
             
-            const
-            thisEmbed = new Discord.MessageEmbed
-            thisEmbed.setColor('GREEN');
-            thisEmbed.setTitle(version.changes[section].title);
-            thisEmbed.setDescription(
-                version.changes[section].content
-                .join('\n')
-            );
+            let commits = version.changes[section].content;
+            let contentBlocks = []
 
-            embeds.push(thisEmbed);
+            for (   let thisCommit = 0, characterCount = 0, thisContent = [];
+                    thisCommit < commits.length;
+                    thisCommit ++) {
+                
+                if (commits[thisCommit].length + characterCount < 2048) {
+                    characterCount += commits[thisCommit].length;
+                    thisContent.push(commits[thisCommit]);
+                } else {
+                    contentBlocks.push(thisContent.join('\n'));
+                    characterCount = commits[thisCommit].length;
+                    thisContent = [commits[thisCommit]];
+                };
+
+                if (thisCommit === commits.length - 1) {
+                    contentBlocks.push(thisContent.join('\n'));
+                };
+            }
+
+            // Set up some variables for tracking forEach state
+            let sectionTitleSet = false;
+            let sectionPage = 1;
+
+            // Generate paginated `Discord.MessageEmbed`s
+            contentBlocks.forEach(contentBlock => {
+
+                // New Discord.MessageEmbed for each iteration
+                const thisEmbed = new Discord.MessageEmbed;
+                
+                // Set up embed
+                thisEmbed.setColor('GREEN');
+                thisEmbed.setDescription(contentBlock);
+
+                // Add a title if this section doesn't have one yet
+                if (!sectionTitleSet) thisEmbed.setTitle(version.changes[section].title);
+                sectionTitleSet = true;
+
+                // Add page numbers if content is paginated
+                if (contentBlocks.length > 1)
+                thisEmbed.setFooter(`Page ${sectionPage} of ${contentBlocks.length}`)
+                sectionPage++;
+
+                // Add embed to the stack
+                embeds.push(thisEmbed);
+            });
         };
         return embeds;
     };
