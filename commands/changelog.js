@@ -178,7 +178,7 @@ function changelog(context, args = [], type, target) {
      *
      * @param  {object} changelog       Representation of changelog from parseChangelog()
      * @param  {Number} offset          Offset changelog version since most recent
-     * @return {Discord.MessageEmbed}   MessageEmbed or error message
+     * @return {Array}                  Array of Discord.MessageEmbed objects
      */
     function generateEmbeds(changelog, offset = 0) {
 
