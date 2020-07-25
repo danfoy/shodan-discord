@@ -198,14 +198,43 @@ function changelog(context, args = [], type, target) {
         }
 
         let embeds = [];
-        
+
+        /**
+         * Generate description text for the header
+         */
+        function generateDescription() {
+
+            // Get number of changes for each section
+            const features = version.changes.find(section => section.title == "Features").content.length;
+            const bugs     = version.changes.find(section => section.title == "Bug Fixes").content.length;
+            const plumbing = version.changes.find(section => section.title == "Plumbing").content.length;
+
+            // Store each section string in an array
+            let output = [];
+            
+            // Generate desciptive text for each section
+            if (features)   output.push(`${features} new or enhanced ${features > 1 ? 'features' : 'feature'}`)
+            if (bugs)       output.push(`${bugs} ${bugs > 1 ? 'patches' : 'patch'}`);
+            if (plumbing)   output.push(`${plumbing} under-the-hood ${plumbing > 1 ? 'tweaks' : 'tweak'}`)
+
+            // Add grammatical 'and' where appropriate
+            if (output.length > 2) output[output.length -1 ] = `and  ${output[output.length - 1]}`;
+
+            // Squash array into a string joined by Oxford commas
+            output = output.join(', ');
+
+            // Return description with release-type introduction
+            return output = `This is a *${features ? 'feature' : 'maintenance'} release* comprised of ${output}.`;
+        }
+
+        const headerDescription = generateDescription();
+
         const
         headerEmbed = new Discord.MessageEmbed();
         headerEmbed.setColor('GREEN');
         headerEmbed.setTitle(`v${version.title}`);
-        headerEmbed.setFooter(
-            `Released on ${version.date.toLocaleDateString('en-GB', {dateStyle: 'full'})}`
-        );
+        headerEmbed.setDescription(headerDescription);
+        headerEmbed.setFooter(`Released on ${version.date.toLocaleDateString('en-GB', {dateStyle: 'full'})}`);
         embeds.push(headerEmbed);
 
         for (   let section = 0;
