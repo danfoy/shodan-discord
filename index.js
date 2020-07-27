@@ -1,10 +1,14 @@
 /* dotenv */      require('dotenv').config();
+
 const fs        = require('fs');
 const Discord   = require('discord.js');
-const { prefix,
-        operators,
+const Shodan    = require('./classes/shodan');
+
+const { operators,
         servers } = require('./config.json');
+
 const TOKEN     = process.env.TOKEN; // handled by dotenv
+const prefix    = Shodan.getPrefix();
 
 const { getCommand } = require('./utils.js');
 
