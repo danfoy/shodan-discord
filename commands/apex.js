@@ -1,10 +1,16 @@
+const prefix        = require('../classes/shodan').getPrefix();
+
 module.exports = {
     name: 'apex',
     aliases: ['legends'],
     description: 'Generate a randomized Apex Legends squad',
-    options:
-        `\`[squad type]\` (optional)\n` +
-        `\`[teammate(s)]\` (optional) teammate names or tags, space-separated\n`,
+    options: [
+        {   arg:    '[squad type]',
+            effect: 'select squad size (see keywords below)',
+            required: false },
+        {   arg:    '[teammate(s)]',
+            effect: 'teammate names or tags, space-separated',
+            required: false } ],
     usage:
         `Tag or name up to two other players and I will work out the squad size myself, ` +
         `using you as the first player by default. ` +
@@ -16,10 +22,11 @@ module.exports = {
         '- `duos` or `duo`\n' +
         '- `solo` or `legend`, `solos`',
     examples:
-        '`!apex squad wraith_ttv gamer420`\n' +
-        'Generate a 3-player squad for you, `wraith_ttv`, and `gamer420`.\n' +
-        '`!apex solo Anakin`\n' +
-        'Generates a solo squad for player `Anakin`',
+        [{  args:   'apex squad wraith_ttv gamer420',
+            effect: 'Generate a 3-player squad for you, `wraith_ttv`, and `gamer420`' },
+        {   args:   'apex solo Anakin',
+            effect: 'Generates a solo squad for player `Anakin`' }
+        ],
     default:
         'Generate one random legend',
     execute: roll

@@ -1,15 +1,23 @@
 module.exports = {
     name: 'ping',
-    description: 'Make me talk on command like some kind of perfoming animal. Originally written to test functionality, now mainly used for flavour.',
-    options:
-        '`list` (optional) Show all available responses\n' +
-        '`[number]` (optional) Return a specific quote\n',
-    default: 'Display a random quote.',
+    description: 'Make me respond on command like some kind of perfoming animal',
+    options: [
+        {   arg:    'list',
+            effect: 'Show all available responses',
+            required: false },
+        {   arg:    '[number]',
+            effect: 'Return a specific quote',
+            required: false } ],
+    examples: [
+        {   args:   'quote list',
+            effect: 'Show a list of all available quotes' },
+        {   args:   'ping 7',
+            effect: 'Respond with quote #7' } ],
+    default: 'Display a random quote',
     aliases: ['quote'],
     execute: quote
 }
 
-const { prefix }        = require('../config.json');
 const { sendMessage }   = require('../utils.js');
 const Discord           = require('discord.js');
 

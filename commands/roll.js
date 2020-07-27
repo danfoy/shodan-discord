@@ -2,10 +2,15 @@ module.exports = {
     name: 'roll',
     aliases: ['dice', 'd'],
     description: 'Roll a dice or generate a random number',
-    options: '`[number]` (optional) - Number of sides on the dice',
-    examples:
-        '`!roll 100`\nRandom number between 1-100\n' +
-        '`!d 20`\nRoll a 20-sided dice',
+    options: [
+        {   args:   '[number]',
+            effect: 'Number of sides on the dice',
+            required: false } ],
+    examples: [
+        {   args:   'roll 100',
+            effect: 'Random number between 1-100' },
+        {   args:   'd 20',
+            effect: 'Roll a 20-sided dice' } ],
     default: 'Roll a 6-sided dice',
     execute: roll
 }

@@ -2,7 +2,6 @@ module.exports = {
     name: 'speak',
     description: 'Talk via Shodan',
     aliases: ['say'],
-    args: false,
     operator: true,
     execute: speak
 }

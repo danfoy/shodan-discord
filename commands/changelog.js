@@ -1,10 +1,16 @@
+const prefix = require('../classes/shodan').getPrefix();
+
 module.exports = {
     name: 'changelog',
     aliases: ['version', 'updates', 'update', 'changes'],
     description: 'Shows recent updates to Shodan',
-    options: '`-[number]` (optional) *-n* changelogs prior to the current version',
-    examples:
-        '`!changelog -1` show the changelog for the previous version',
+    options: [
+        {   arg:    '-[number]',
+            effect: '*-n* changelogs prior to the current version',
+            required: false } ],
+    examples: [
+        {   args:   'version -1',
+            effect: 'Show the changelog for the previous version' } ],
     default: 'Show the changelog for the current version',
     execute: changelog
 };
