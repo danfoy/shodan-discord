@@ -1,19 +1,17 @@
-module.exports = {
+const Command = require('../classes/command');
+const command = new Command({
     name: 'roll',
     aliases: ['dice', 'd'],
-    description: 'Roll a dice or generate a random number',
-    options: [
-        {   args:   '[number]',
-            effect: 'Number of sides on the dice',
-            required: false } ],
-    examples: [
-        {   args:   'roll 100',
-            effect: 'Random number between 1-100' },
-        {   args:   'd 20',
-            effect: 'Roll a 20-sided dice' } ],
-    default: 'Roll a 6-sided dice',
+    description: 'Generate a random number. Roll a dice.',
+    standalone: 'Roll a 6-sided dice',
     execute: roll
-}
+});
+command.setAccessLevel('anon');
+command.addOption('[number]', 'Number of sides on the dice');
+command.addExample('roll 100', 'Random number between 1-100');
+command.addExample('d 20', 'Roll a 20-sided dice');
+
+module.exports = command;
 
 const { sendMessage } = require('../utils.js');
 

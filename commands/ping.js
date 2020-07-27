@@ -1,22 +1,18 @@
-module.exports = {
+const Command = require('../classes/command');
+
+const command = new Command ({
     name: 'ping',
-    description: 'Make me respond on command like some kind of perfoming animal',
-    options: [
-        {   arg:    'list',
-            effect: 'Show all available responses',
-            required: false },
-        {   arg:    '[number]',
-            effect: 'Return a specific quote',
-            required: false } ],
-    examples: [
-        {   args:   'quote list',
-            effect: 'Show a list of all available quotes' },
-        {   args:   'ping 7',
-            effect: 'Respond with quote #7' } ],
-    default: 'Display a random quote',
     aliases: ['quote'],
+    description: 'Make me respond on command like some kind of perfoming animal',
+    standalone: 'Display a random quote',
     execute: quote
-}
+});
+command.setAccessLevel('anon');
+command.addOption('list', 'Show all available responses');
+command.addOption('[number]', 'Respond with a specific quote');
+command.addExample('quote list', 'Show a list of all available quotes');
+command.addExample('ping 7', 'Respond with quote #7');
+module.exports = command;
 
 const { sendMessage }   = require('../utils.js');
 const Discord           = require('discord.js');

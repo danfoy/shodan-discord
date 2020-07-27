@@ -1,25 +1,19 @@
-const prefix = require('../classes/shodan').getPrefix();
-
-module.exports = {
+const Command = require('../classes/command');
+const command = new Command({
     name: 'changelog',
     aliases: ['version', 'updates', 'update', 'changes'],
     description: 'Shows recent updates to Shodan',
-    options: [
-        {   arg:    '-[number]',
-            effect: '*-n* changelogs prior to the current version',
-            required: false } ],
-    examples: [
-        {   args:   'version -1',
-            effect: 'Show the changelog for the previous version' } ],
-    default: 'Show the changelog for the current version',
+    standalone: 'Show the changelog for the current version',
     execute: changelog
-};
+});
+command.setAccessLevel('anon');
+command.addOption('-[number]', '-n changelogs prior to the current version');
+command.addExample('version -1', 'Show the changelog for the previous version');
+module.exports = command;
 
 const fs = require('fs');
-const util = require('util');
 const Discord = require('discord.js');
 const { sendMessage } = require('../utils.js');
-
 
 function changelog(context, args = [], type, target) {
 

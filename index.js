@@ -91,7 +91,7 @@ client.on('message', (message) => {
         return;
     };
 
-    if (command.operator && ! operators.includes(message.author.id)) {
+    if (command.accessLevel > 1 && ! operators.includes(message.author.id)) {
         message.channel.send([
             `You are not authorized to use \`${commandName}\``,
             `Your infraction has been noted. I am watching you, ${message.author.username}.`

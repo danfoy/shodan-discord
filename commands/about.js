@@ -1,12 +1,15 @@
-module.exports = {
+const Command = require('../classes/command');
+const command = new Command({
     name: 'about',
-    description: "Display information about Shodan and her host system's statistics",
     aliases: ['info', 'stats'],
+    description: "Display information about Shodan and her host system's statistics",
     execute: about
-}
+});
+command.setAccessLevel('anon');
+module.exports = command;
 
 const { sendMessage, hr, parseSeconds } = require('../utils.js');
-const os                          = require('os');
+const os = require('os');
 
 function about(context, args = [], type, target) {
 

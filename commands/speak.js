@@ -1,10 +1,12 @@
-module.exports = {
-    name: 'speak',
+const Command = require('../classes/command');
+const command = new Command({
+    name: 'say',
     description: 'Talk via Shodan',
-    aliases: ['say'],
-    operator: true,
+    aliases: ['speak'],
     execute: speak
-}
+});
+command.setAccessLevel('operator');
+module.exports = command;
 
 const {servers} = require('../config.json');
 const { sendMessage } = require('../utils.js');

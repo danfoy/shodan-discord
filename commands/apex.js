@@ -1,16 +1,8 @@
-const prefix        = require('../classes/shodan').getPrefix();
-
-module.exports = {
+const Command = require('../classes/command');
+const command = new Command({
     name: 'apex',
     aliases: ['legends'],
     description: 'Generate a randomized Apex Legends squad',
-    options: [
-        {   arg:    '[squad type]',
-            effect: 'select squad size (see keywords below)',
-            required: false },
-        {   arg:    '[teammate(s)]',
-            effect: 'teammate names or tags, space-separated',
-            required: false } ],
     usage:
         `Tag or name up to two other players and I will work out the squad size myself, ` +
         `using you as the first player by default. ` +
@@ -21,16 +13,16 @@ module.exports = {
         '- `squads`, or `squad`, `legends`, `team`, `trios`, `trio`\n' +
         '- `duos` or `duo`\n' +
         '- `solo` or `legend`, `solos`',
-    examples:
-        [{  args:   'apex squad wraith_ttv gamer420',
-            effect: 'Generate a 3-player squad for you, `wraith_ttv`, and `gamer420`' },
-        {   args:   'apex solo Anakin',
-            effect: 'Generates a solo squad for player `Anakin`' }
-        ],
-    default:
+    standalone:
         'Generate one random legend',
     execute: roll
-}
+});
+command.setAccessLevel('anon');
+command.addOption('[squad type]', 'select squad size (see keywords below)');
+command.addOption('[teammate(s)]', 'teammate names or tags, space-separated');
+command.addExample('apex squad wraith_ttv gamer420', 'Generate a 3-player squad for you, `wraith_ttv`, and `gamer420`');
+command.addExample('apex solo Delores', 'Generates a solo squad for player `Delores`')
+module.exports = command;
 
 const { legends }   = require('../data/legends.json');
 const { sendMessage } = require('../utils.js');
