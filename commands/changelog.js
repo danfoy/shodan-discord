@@ -12,7 +12,7 @@ command.addExample('version -1', 'Show the changelog for the previous version');
 module.exports = command;
 
 const fs = require('fs');
-const Discord = require('discord.js');
+const MessageEmbed = require('../discord/classes/Discord').MessageEmbed;
 const { sendMessage } = require('../utils.js');
 
 function changelog(context, args = [], type, target) {
@@ -235,7 +235,7 @@ function changelog(context, args = [], type, target) {
         const headerDescription = generateDescription();
 
         const
-        headerEmbed = new Discord.MessageEmbed();
+        headerEmbed = new MessageEmbed();
         headerEmbed.setColor('GREEN');
         headerEmbed.setTitle(`Shodan v${version.title}`);
         headerEmbed.setDescription(headerDescription);
@@ -275,7 +275,7 @@ function changelog(context, args = [], type, target) {
             contentBlocks.forEach(contentBlock => {
 
                 // New Discord.MessageEmbed for each iteration
-                const thisEmbed = new Discord.MessageEmbed;
+                const thisEmbed = new MessageEmbed;
                 
                 // Set up embed
                 thisEmbed.setColor('GREEN');

@@ -15,7 +15,7 @@ command.addExample('ping 7', 'Respond with quote #7');
 module.exports = command;
 
 const { sendMessage }   = require('../utils.js');
-const Discord           = require('discord.js');
+const MessageEmbed      = require('../discord/classes/Discord').MessageEmbed;
 
 function quote(context, args = [], type, target) {
 
@@ -45,7 +45,7 @@ function quote(context, args = [], type, target) {
     if (args[0] === "list") {
 
         let quoteEmbeds = [];
-        currentEmbed = new Discord.MessageEmbed(),
+        currentEmbed = new MessageEmbed(),
         currentEmbed.setColor('GREEN')
         currentEmbed.setTitle('__**Selectable Ping Responses:**__')
         currentEmbed.setFooter(`Page 1 of ${Math.ceil(quotes.length / 5)}`)
@@ -60,7 +60,7 @@ function quote(context, args = [], type, target) {
             if (fieldCounter === 5 || index == quotes.length - 1 ) {
                 embedCounter++;
                 quoteEmbeds.push(currentEmbed);
-                currentEmbed = new Discord.MessageEmbed();
+                currentEmbed = new MessageEmbed();
                 currentEmbed.setColor('GREEN');
                 currentEmbed.setFooter(`Page ${embedCounter} of ${Math.ceil(quotes.length / 5)}`)
                 fieldCounter = 0;

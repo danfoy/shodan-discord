@@ -26,11 +26,11 @@ module.exports = command;
 
 const { legends }   = require('../data/legends.json');
 const { sendMessage } = require('../utils.js');
-const   Discord     = require('discord.js');
+const   MessageEmbed     = require('../discord/classes/Discord').MessageEmbed;
 
 function roll(context, args = [], type, target) {
 
-    const embedObj = new Discord.MessageEmbed();
+    const embedObj = new MessageEmbed();
 
     function generateRoster(squadSize, embed, playerOne = false) {
 

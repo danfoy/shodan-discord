@@ -1,8 +1,10 @@
 /* dotenv */      require('dotenv').config();
 
 const fs        = require('fs');
-const Discord   = require('discord.js');
+const Discord   = require('./discord/classes/Discord');
 const Shodan    = require('./classes/shodan');
+
+const Discordjs = require('discord.js');
 
 const { operators,
         servers } = require('./config.json');
@@ -13,8 +15,8 @@ const prefix    = Shodan.getPrefix();
 const { getCommand } = require('./utils.js');
 
 // Setup client
-const client = new Discord.Client();
-client.commands = new Discord.Collection();
+const client = new Discordjs.Client();
+client.commands = new Discordjs.Collection();
 
 const commandFiles = fs.readdirSync('./commands')
     .filter(file => file.endsWith('.js'));

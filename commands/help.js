@@ -16,14 +16,14 @@ command.addExample('help help', 'Show manual for the help command itself (this p
 command.addExample('help roll', 'Show manual for the roll command');
 module.exports = command;
 
-const Discord           = require('discord.js');
+const MessageEmbed  = require('../discord/classes/Discord').MessageEmbed;
 const prefix            = require('../classes/shodan').getPrefix();
 const { getCommand, sendMessage }    = require('../utils.js')
 
 function man(context, args = [], type, target) {
 
     const { commands } = context.client;
-    const embedObj     = new Discord.MessageEmbed();
+    const embedObj     = new MessageEmbed();
 
     embedObj.setColor('GREEN');
 
