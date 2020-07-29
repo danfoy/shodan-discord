@@ -1,4 +1,4 @@
-const Command = require('../classes/command');
+const Command = require('../classes/Command');
 
 const command = new Command ({
     name: 'ping',
@@ -14,10 +14,9 @@ command.addExample('quote list', 'Show a list of all available quotes');
 command.addExample('ping 7', 'Respond with quote #7');
 module.exports = command;
 
-const { sendMessage }   = require('../utils.js');
-const MessageEmbed      = require('../discord/classes/Discord').MessageEmbed;
+const Discord = require('../classes/Discord');
 
-function quote(context, args = [], type, target) {
+function quote(context, args = []) {
 
     const user = `<@${context.author.id}>`;
 
@@ -38,14 +37,14 @@ function quote(context, args = [], type, target) {
 
     // Speak a random quote
     if (!args[0]) {
-        return sendMessage(context, type, target, quotes[Math.floor(Math.random() * quotes.length)]);
+        return Discord.send(context.channel, quotes[Math.floor(Math.random() * quotes.length)]);
     };
 
     // List all quotes
     if (args[0] === "list") {
 
         let quoteEmbeds = [];
-        currentEmbed = new MessageEmbed(),
+        currentEmbed = new Discord.MessageEmbed(),
         currentEmbed.setColor('GREEN')
         currentEmbed.setTitle('__**Selectable Ping Responses:**__')
         currentEmbed.setFooter(`Page 1 of ${Math.ceil(quotes.length / 5)}`)
@@ -60,7 +59,7 @@ function quote(context, args = [], type, target) {
             if (fieldCounter === 5 || index == quotes.length - 1 ) {
                 embedCounter++;
                 quoteEmbeds.push(currentEmbed);
-                currentEmbed = new MessageEmbed();
+                currentEmbed = new Discord.MessageEmbed();
                 currentEmbed.setColor('GREEN');
                 currentEmbed.setFooter(`Page ${embedCounter} of ${Math.ceil(quotes.length / 5)}`)
                 fieldCounter = 0;
@@ -68,21 +67,21 @@ function quote(context, args = [], type, target) {
         };
 
         return quoteEmbeds.forEach(embed => {
-            sendMessage(context, type, target, embed);
+            Discord.send(context.channel, embed);
         });
     };
 
     // Validation on arguments that arent `list` or a number
     if (isNaN(parseInt(args[0]))) {
-        return sendMessage(context, type, target, `\`list\` or digits only, ${user}`);
+        return Discord.send(context.channel, `\`list\` or digits only, ${user}`);
     };
 
     // Speak a specific quote
     if (typeof parseInt(args[0]) === 'number') {
         //Check quote is in range
-        if (args[0] > quotes.length) return sendMessage(context, type, target,
+        if (args[0] > quotes.length) return Discord.send(context,
             `There are only ${quotes.length} options to choose from, ${user}`)
         // Speak specific quote
-        else return sendMessage(context, type, target, quotes[args[0] - 1]);
+        else return Discord.send(context.channel, quotes[args[0] - 1]);
     };
 };

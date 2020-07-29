@@ -1,5 +1,5 @@
-const Command = require('../classes/command');
-const Changelog = require('../classes/Changelog');
+const Command = require('../classes/Command');
+const Changelog = require('../../classes/Changelog');
 const command = new Command({
     name: 'changelog',
     aliases: ['version', 'updates', 'update', 'changes'],
@@ -13,12 +13,13 @@ command.addExample('version -1', 'Show the changelog for the previous version');
 module.exports = command;
 
 const fs = require('fs');
-const MessageEmbed = require('../discord/classes/Discord').MessageEmbed;
-const { sendMessage } = require('../utils.js');
+const MessageEmbed = require('../classes/Discord').MessageEmbed;
+const { sendMessage } = require('../../utils.js');
+const Discord = require('../classes/Discord');
 
-function changelog(context, args = [], type, target) {
+function changelog(context, args = []) {
 
-    const changelog = new Changelog('../CHANGELOG.md').parse();
+    const changelog = new Changelog('../CHANGELOG.md');
 
     let offset = 0;
     
@@ -28,12 +29,8 @@ function changelog(context, args = [], type, target) {
         else return sendMessage(context, type, target, `${args.join(/ +/)} is invalid usage, n00b.`);
     }
 
-    let embedMessages = generateEmbeds(changelog, offset);
-    return embedMessages.forEach(embed => sendMessage(context, type, target, embed));
+    return Discord.send(context.channel, generateEmbeds(changelog, offset));
 
-
-    // Functions
-    
     /**
      * Generate a changelog embed object to send to Discord
      *
@@ -48,7 +45,7 @@ function changelog(context, args = [], type, target) {
             return ['Offset must be in digits, n00b. Try again.'];
         }
         
-        const version = changelog.versions[offset];
+        const version = changelog.getByOffset(offset);
 
         // Check this version exists
         if (!version) {
@@ -66,8 +63,8 @@ function changelog(context, args = [], type, target) {
         function generateDescription() {
 
             function findSection(title) {
-                try { return version.changes.find(section => section.title === title).content.length }
-                catch { return 0 };
+                try     { return version.changes.find(section => section.title === title).content.length }
+                catch   { return false };
             }
 
             // Get number of changes for each section

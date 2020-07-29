@@ -3,8 +3,18 @@ const Shodan = require('./shodan');
 class Changelog {
     constructor(file) {
         this.file = Shodan.getFile(file);
+        this.all = this.parse(file);
+        this.header = this.all.header;
+        this.versions = {
+            current: this.all.versions[0],
+            byOffset: this.getByOffset()
+        }
     }
-    
+
+    getByOffset(offset) {
+        return this.all.versions[offset];
+    }
+
     /**
      * Take a hierarchically-structured CHANGELOG.md and parse it into an Object
      *

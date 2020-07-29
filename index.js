@@ -10,7 +10,6 @@ const { operators,
         servers } = require('./config.json');
 
 const TOKEN     = process.env.TOKEN; // handled by dotenv
-const prefix    = Shodan.getPrefix();
 
 const { getCommand } = require('./utils.js');
 
@@ -18,10 +17,10 @@ const { getCommand } = require('./utils.js');
 const client = new Discordjs.Client();
 client.commands = new Discordjs.Collection();
 
-const commandFiles = fs.readdirSync('./commands')
+const commandFiles = fs.readdirSync('./discord/commands/')
     .filter(file => file.endsWith('.js'));
 for (const file of commandFiles) {
-    const command = require(`./commands/${file}`);
+    const command = require(`./discord/commands/${file}`);
     client.commands.set(command.name, command);
 };
 
@@ -60,7 +59,7 @@ client.once('ready', () => {
 client.on('message', (message) => {
 
     // React with ping command if pinged
-    if (    !message.content.startsWith(prefix)
+    if (    !message.content.startsWith(Discord.prefix)
             && message.mentions.has(client.user)
             && message.author != client.user
             && !message.author.bot ){
@@ -69,13 +68,13 @@ client.on('message', (message) => {
         return ping.execute(message);
     };
 
-    // Ignore messages without prefix or from other bots
-    if (!message.content.startsWith(prefix) || message.author.bot) return;
+    // Ignore messages without Discord.prefix or from other bots
+    if (!message.content.startsWith(Discord.prefix) || message.author.bot) return;
 
 
     // Split message into arguments
     const args = message.content
-        .slice(prefix.length)           // Remove prefix from message
+        .slice(Discord.prefix.length)           // Remove Discord.prefix from message
         .split(/ +/);                   // Split using spaces as delimiter
 
     // Isolate command part of message
@@ -105,7 +104,7 @@ client.on('message', (message) => {
     if (command.args && !args[0]) {
         message.channel.send([
             `\`${commandName}\` command is missing its argument(s)`,
-            `${message.author.username} you fuckin n00b. RTFM \`${prefix + 'help ' + commandName }\``
+            `${message.author.username} you fuckin n00b. RTFM \`${Discord.prefix + 'help ' + commandName }\``
             ]);
         return;
     };

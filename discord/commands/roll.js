@@ -1,4 +1,4 @@
-const Command = require('../classes/command');
+const Command = require('../classes/Command');
 const command = new Command({
     name: 'roll',
     aliases: ['dice', 'd'],
@@ -13,12 +13,12 @@ command.addExample('d 20', 'Roll a 20-sided dice');
 
 module.exports = command;
 
-const { sendMessage } = require('../utils.js');
+const Discord = require('../classes/Discord');
 
-function roll(context, args = [], type, target) {
+function roll(context, args = []) {
 
     if (args[0] && ! parseInt(args[0])) {
-        return sendMessage(context, type, target, `Digits only please <@${message.author.id}>, rtfm`);
+        return Discord.send(context.channel, `Digits only please <@${message.author.id}>, rtfm`);
     };
 
     const sides = parseInt(args[0]) ? args[0] : 6;
@@ -27,6 +27,5 @@ function roll(context, args = [], type, target) {
         return Math.floor((Math.random() * sides) + 1);
     };
 
-
-    sendMessage(context, type, target, `<@${context.author.id}> rolled ${rollDice(sides)}`);
+    Discord.send(context.channel, `<@${context.author.id}> rolled ${rollDice(sides)}`);
 }

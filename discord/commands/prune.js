@@ -1,4 +1,4 @@
-const Command = require('../classes/command');
+const Command = require('../classes/Command');
 const command = new Command({
     name: 'prune',
     aliases: ['purge', 'delete', 'del', 'clear'],
@@ -10,21 +10,19 @@ command.setAccessLevel('admin');
 command.addOption('[number] (between 2 and 99)', 'Delete this many posts');
 module.exports = command;
 
-const { sendMessage } = require('../utils.js');
+const Discord = require('../classes/Discord');
 
-function prune(context, args = [], type, target) {
-
-    console.log(command.accessLevel);
+function prune(context, args = []) {
 
     if (args[0] && isNaN(parseInt(args[0]))) {
-        return sendMessage(context, type, target,
+        return Discord.send(context.channel,
             `Digits only please, <@${context.author.id}>`);
     };
 
     const amount = args[0] ? parseInt(args[0]) + 1 : 2;   // Include command message
 
     if (amount > 100) {
-        return sendMessage(context, type, target,
+        return Discord.send(context.channel,
             `You are pruning too greedily and too deep, <@${context.author.id}>. ` +
             `Knock off at least ${amount - 100} and then we'll see.`);
     };
@@ -32,6 +30,6 @@ function prune(context, args = [], type, target) {
     context.channel.bulkDelete(amount, true)
         .catch((error) => {
             console.error(error);
-            sendMessage(context, type, target, 'Unable to prune messages');
+            Discord.send(context.channel, 'Unable to prune messages');
         });
 }

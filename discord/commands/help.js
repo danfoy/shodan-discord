@@ -1,4 +1,4 @@
-const Command = require('../classes/command');
+const Command = require('../classes/Command');
 
 const command = new Command({
     name: 'help',
@@ -16,11 +16,10 @@ command.addExample('help help', 'Show manual for the help command itself (this p
 command.addExample('help roll', 'Show manual for the roll command');
 module.exports = command;
 
-const MessageEmbed  = require('../discord/classes/Discord').MessageEmbed;
-const prefix            = require('../classes/shodan').getPrefix();
-const { getCommand, sendMessage }    = require('../utils.js')
+const MessageEmbed  = require('../classes/Discord').MessageEmbed;
+const Discord = require('../classes/Discord');
 
-function man(context, args = [], type, target) {
+function man(context, args = []) {
 
     const { commands } = context.client;
     const embedObj     = new MessageEmbed();
@@ -35,23 +34,23 @@ function man(context, args = [], type, target) {
         commands.map(command => {
             if (command.aliases) {
                 embedObj.addField(
-                    `__**\`${prefix + command.name}\`**__ (or \`${prefix + command.aliases.join(`\`, \`${prefix}`)}\`)`,
+                    `__**\`${Discord.prefix + command.name}\`**__ (or \`${Discord.prefix + command.aliases.join(`\`, \`${Discord.prefix}`)}\`)`,
                     `*${command.description}*\n\u200b`
                 );
             } else {
                 embedObj.addField(
-                    `__**\`${prefix + command.name}\`**__`,
+                    `__**\`${Discord.prefix + command.name}\`**__`,
                     `${command.description}\n\u200b`
                 );
             }
         });
 
-        embedObj.setFooter(`Type ${prefix}help [command] for help on specific commands`);
+        embedObj.setFooter(`Type ${Discord.prefix}help [command] for help on specific commands`);
 
-        return sendMessage(context, type, target, embedObj);
+        return Discord.send(context.channel, embedObj);
     };
 
-    const command = getCommand(context.client, args[0]);
+    const command = Discord.getCommand(context.client, args[0]);
 
     const aliases = command.aliases ?
                         ` (or \`${command.aliases.join('\`, \`')}\`)` :
@@ -66,7 +65,7 @@ function man(context, args = [], type, target) {
     function parseExamples(examples) {
         let output = '';
         examples.forEach(example => {
-            output += `\`${ prefix + example.args }\`\n*${ example.effect }*\n\u200b\n`;
+            output += `\`${ Discord.prefix + example.args }\`\n*${ example.effect }*\n\u200b\n`;
         });
         return output;
     };
@@ -84,13 +83,13 @@ function man(context, args = [], type, target) {
         return output;
     };
 
-    embedObj.setTitle(`__\`${prefix + command.name}\`` + aliases + '__');
+    embedObj.setTitle(`__\`${Discord.prefix + command.name}\`` + aliases + '__');
     if (command.description)    embedObj.setDescription(command.description + '\n\u200b\n');
     if (command.options.length) embedObj.addField('**Options:**', parseOptions(command.options));
     if (command.usage)          embedObj.addField('**Usage:**', command.usage + '\n\u200b\n');
     if (command.examples.length)embedObj.addField('**Examples:**', parseExamples(command.examples));
-    if (command.default)        embedObj.addField(`__**Default (just \`${prefix + command.name}\`):**__`, command.default);
+    if (command.default)        embedObj.addField(`__**Default (just \`${Discord.prefix + command.name}\`):**__`, command.default);
 
-    sendMessage(context, type, target, embedObj);
+    Discord.send(context.channel, embedObj);
 
 }

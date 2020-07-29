@@ -1,4 +1,4 @@
-const Command = require('../classes/command');
+const Command = require('../classes/Command');
 const command = new Command({
     name: 'apex',
     aliases: ['legends'],
@@ -24,13 +24,12 @@ command.addExample('apex squad wraith_ttv gamer420', 'Generate a 3-player squad 
 command.addExample('apex solo Delores', 'Generates a solo squad for player `Delores`')
 module.exports = command;
 
-const { legends }   = require('../data/legends.json');
-const { sendMessage } = require('../utils.js');
-const   MessageEmbed     = require('../discord/classes/Discord').MessageEmbed;
+const { legends }   = require('../../data/legends.json');
+const Discord = require('../classes/Discord');
 
-function roll(context, args = [], type, target) {
+function roll(context, args = []) {
 
-    const embedObj = new MessageEmbed();
+    const embedObj = new Discord.MessageEmbed();
 
     function generateRoster(squadSize, embed, playerOne = false) {
 
@@ -107,9 +106,9 @@ function roll(context, args = [], type, target) {
 
     function sendEmbed(squadSize, embedObj, playerOne = false) {
         generateRoster(squadSize, embedObj, playerOne);
-        sendMessage(context, type, target, embedObj);
+        Discord.send(context.channel, embedObj);
         let quip = generateQuip(embedObj);
-        if (quip) sendMessage(context, type, target, quip);
+        if (quip) Discord.send(context.channel, quip);
     }
 
     /**
@@ -183,7 +182,7 @@ function roll(context, args = [], type, target) {
 
     // Error - more than 3 squad members (including invoking user)
     if (args[3]) {
-        return sendMessage(context, type, target, 'How am I supposed to generate a squad with more than 3 members? Moron. RTFM.');
+        return Discord.send(context.channel, 'How am I supposed to generate a squad with more than 3 members? Moron. RTFM.');
     };
 
     // Implied Trios, explicit playerOne mode
