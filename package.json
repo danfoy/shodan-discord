@@ -86,7 +86,7 @@
   },
   "devDependencies": {
     "conventional-changelog-cli": "^2.0.34",
-    "nodemon": "^2.0.3",
+    "nodemon": "^2.0.4",
     "standard-version": "^8.0.2"
   }
 }
