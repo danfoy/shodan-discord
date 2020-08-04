@@ -64,19 +64,3 @@ function reply(message, response){
         .catch(error => console.log(error));
 }
 module.exports.reply = reply;
-
-
-function parseSeconds(seconds) {
-    let days = Math.floor(   seconds / (60 * 60 * 24)               );
-    let hrs  = Math.floor( ( seconds % (60 * 60 * 24) ) / (60 * 60) );
-    let mins = Math.floor( ( seconds % (60 * 60)      ) /  60       );
-    let secs = Math.floor(   seconds %  60                          );
-
-    days += days === 1 ? ' day'    : ' days';
-    hrs  += hrs  === 1 ? ' hour'   : ' hours';
-    mins += mins === 1 ? ' minute' : ' minutes';
-    secs += secs === 1 ? ' second' : ' seconds';
-
-    return `${days}, ${hrs}, ${mins} and ${secs}`;
-}
-module.exports.parseSeconds = parseSeconds;

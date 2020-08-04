@@ -1,4 +1,5 @@
 const Discordjs = require('discord.js');
+const Shodan    = require('../../classes/shodan');
 
 class Discord {
     constructor() {
@@ -30,6 +31,25 @@ class Discord {
                     cmd.aliases.includes(commandName)
                 );
     };
+
+    formatSeconds(seconds) {
+        const parsed = Shodan.parseSeconds(seconds);
+
+        let { weeks, days, hours } = parsed;
+        let mins = parsed.minutes;
+        let secs = parsed.seconds;
+
+        let output = '**';
+
+        // Build output string
+        if (weeks) output += weeks += weeks === 1 ? '** week, **'      : '** weeks, **'     ;
+        if (days)  output += days  += days  === 1 ? '** day, **'       : '** days, **'      ;
+        if (hours) output += hours += hours === 1 ? '** hour, **'      : '** hours, **'     ;
+        if (mins)  output += mins  += mins  === 1 ? '** minute and **' : '** minutes and **';
+                   output += secs  += secs  === 1 ? '** second'        : '** seconds'       ;
+
+        return output;
+    }
 };
 
 module.exports = new Discord;
