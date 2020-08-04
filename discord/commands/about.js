@@ -1,4 +1,4 @@
-const Command = require('../classes/command');
+const Command = require('../classes/Command');
 const command = new Command({
     name: 'status',
     aliases: ['info', 'stats', 'about'],
