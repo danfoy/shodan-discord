@@ -34,23 +34,27 @@ client.once('ready', () => {
     // Log login
     console.info(`Logged into Discord as ${client.user.tag}`);
 
-    // Check when changelog was last updated
+    // Send a changelog embed if there's a new changelog
     fs.stat(__dirname + '/CHANGELOG.md', (error, stats) => {
         if (error) return console.error(error);
-
-        // Make changelog command available
-        const changelog = getCommand(client, 'changelog');
-        // Get time since change in seconds
+        
+        // Check whether changelog is new
         const changelogTimer = Math.floor((new Date - stats.mtime) / 1000);
+        if (changelogTimer > 120) return;
 
-        // Execute if changelog modified time < #seconds
-        if (changelogTimer < 120) {
-            // Loop through each server in config.json
-            servers.forEach( server => {
-                // Send to 'logging' value for each server
-                changelog.execute(client, [], 'channel', server.logging);
-            });
-        };
+        // Load the changelog command for use
+        const changelogCmd = getCommand(client, 'changelog');
+
+        // Loop through designated channels in {servers} from config.json
+        servers.forEach( server => {
+            if (!client.channels.cache.get(server.testing)) return;
+            client.channels.fetch(server.testing)
+                .then(channel => {
+                    console.log(`Sending changelog to ${channel.name} as ${channel.id}`);
+                    changelogCmd.execute({channel});
+                }) 
+                .catch(error => console.error(error));
+        });
     });
 });
 
