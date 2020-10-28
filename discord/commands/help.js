@@ -90,6 +90,6 @@ function man(context, args = []) {
     if (command.examples.length)embedObj.addField('**Examples:**', parseExamples(command.examples));
     if (command.default)        embedObj.addField(`__**Default (just \`${Discord.prefix + command.name}\`):**__`, command.default);
 
-    Discord.send(context.channel, embedObj);
+    Discord.send(context.channel || context.dmChannel, embedObj);
 
 }

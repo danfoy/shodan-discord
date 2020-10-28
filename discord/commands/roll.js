@@ -17,10 +17,16 @@ const Discord = require('../classes/Discord');
 
 function roll(context, args = []) {
 
+    // Command syntax check
     if (args[0] && ! parseInt(args[0])) {
-        return Discord.send(context.channel, `Digits only please <@${message.author.id}>, rtfm`);
+        return Discord.send(context.channel,
+            `Digits only please <@${context.author.id}>, rtfm\n` +
+            'Type (or DM me) `!help roll` for correct usage, ' +
+            'or `!help` for all available commands'
+        );
     };
 
+    // Get number of sides or use default
     const sides = parseInt(args[0]) ? args[0] : 6;
 
     function rollDice(sides) {
