@@ -19,8 +19,9 @@ command.addExample('flip', 'Flip a coin');
 command.addExample('flip Apex/PUBG', 'Decide between Apex or PUBG');
 command.addExample( 'choose whether to hot drop or be a coward',
                     'Decide between `to hot drop` or `be a coward`');
-command.addExample( 'decide between coke, pepsi, or the tears of your enemies',
-                    'Choose between `coke`, `pepsi`, or `the tears of your enemies`');
+command.addExample( 'decide to crush your enemies, see them driven before you, ' + 
+                    'or to hear the lamentations of their women',
+                    'Determine [what is best in life](https://www.youtube.com/watch?v=Oo9buo9Mtos)');
 
 module.exports = command;
 
