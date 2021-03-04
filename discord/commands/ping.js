@@ -2,7 +2,6 @@ const Command = require('../classes/Command');
 
 const command = new Command ({
     name: 'ping',
-    aliases: ['quote'],
     description: 'Make me respond on command like some kind of perfoming animal',
     standalone: 'Display a random quote',
     execute: quote
