@@ -115,7 +115,7 @@ client.on('message', (message) => {
 
     // Execute command
     try {
-        (command.execute(message, args));
+        (command.execute(message, args, commandName));
     } catch (error) {
         console.error(error);
         message.channel.send(`Failure processing \`${commandName}\``);
