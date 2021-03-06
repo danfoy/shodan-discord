@@ -118,6 +118,7 @@ function changelog(message, args = []) {
 
             if (commits[thisCommit].length + characterCount < 2048) {
                 characterCount += commits[thisCommit].length;
+                commits[thisCommit] = '•' + commits[thisCommit];
                 thisContent.push(commits[thisCommit]);
             } else {
                 contentBlocks.push(thisContent.join('\n'));

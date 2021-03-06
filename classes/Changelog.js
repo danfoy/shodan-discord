@@ -84,9 +84,10 @@ class Changelog {
                     .toString()
                     .trim();
 
-                // Remove empty lines from commit array
-                let content = commit.filter(commit => commit != '');
-
+                // Remove empty lines and Markdown bullets from commit array
+                let content = commit
+                    .filter(commit => commit != '')
+                    .map(entry => entry.replace(/^\*/, ''));
 
                 let changes = {
                     title: sectionTitle,
