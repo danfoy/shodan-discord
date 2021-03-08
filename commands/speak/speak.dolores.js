@@ -11,19 +11,19 @@ module.exports = command;
 const {servers} = require('../../config.json');
 const Dolores = require('../../dolores/Dolores');
 
-function speak(context, args = []) {
+function speak(message, args = []) {
 
     const serverArg = args.shift();
 
     const server = servers.find( ({name}) => name === serverArg.toLowerCase());
     if (!server) {
-        return Dolores.send(context.channel, `\`${serverArg}\` is not a recognised server`);
+        return Dolores.send(message.channel, `\`${serverArg}\` is not a recognised server`);
     }
 
     const channel = server[args.shift()];
     if (!channel) {
-        return Dolores.send(context.channel, `\`${channel}\` is not a channel on \`${server.name}\``)
+        return Dolores.send(message.channel, `\`${channel}\` is not a channel on \`${server.name}\``)
     }
 
-    return context.client.channels.cache.get(channel).send(args.join(' '));
+    return message.client.channels.cache.get(channel).send(args.join(' '));
 }

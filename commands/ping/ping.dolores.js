@@ -16,9 +16,9 @@ module.exports = command;
 const Dolores = require('../../dolores/Dolores');
 const Discord = require('discord.js');
 
-function quote(context, args = []) {
+function quote(message, args = []) {
 
-    const user = `<@${context.author.id}>`;
+    const user = `<@${message.author.id}>`;
 
     // List of quotes to pull from
     let quotes = [
@@ -37,7 +37,7 @@ function quote(context, args = []) {
 
     // Speak a random quote
     if (!args[0]) {
-        return Dolores.send(context.channel, quotes[Math.floor(Math.random() * quotes.length)]);
+        return Dolores.send(message.channel, quotes[Math.floor(Math.random() * quotes.length)]);
     };
 
     // List all quotes
@@ -67,21 +67,21 @@ function quote(context, args = []) {
         };
 
         return quoteEmbeds.forEach(embed => {
-            Dolores.send(context.channel, embed);
+            Dolores.send(message.channel, embed);
         });
     };
 
     // Validation on arguments that arent `list` or a number
     if (isNaN(parseInt(args[0]))) {
-        return Dolores.send(context.channel, `\`list\` or digits only, ${user}`);
+        return Dolores.send(message.channel, `\`list\` or digits only, ${user}`);
     };
 
     // Speak a specific quote
     if (typeof parseInt(args[0]) === 'number') {
         //Check quote is in range
-        if (args[0] > quotes.length) return Discord.send(context,
+        if (args[0] > quotes.length) return Discord.send(message,
             `There are only ${quotes.length} options to choose from, ${user}`)
         // Speak specific quote
-        else return Dolores.send(context.channel, quotes[args[0] - 1]);
+        else return Dolores.send(message.channel, quotes[args[0] - 1]);
     };
 };

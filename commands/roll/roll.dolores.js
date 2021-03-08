@@ -15,12 +15,12 @@ module.exports = command;
 
 const Dolores = require('../../dolores/Dolores');
 
-function roll(context, args = []) {
+function roll(message, args = []) {
 
     // Command syntax check
     if (args[0] && ! parseInt(args[0])) {
-        return Dolores.send(context.channel,
-            `Digits only please <@${context.author.id}>, rtfm\n` +
+        return Dolores.send(message.channel,
+            `Digits only please <@${message.author.id}>, rtfm\n` +
             'Type (or DM me) `!help roll` for correct usage, ' +
             'or `!help` for all available commands'
         );
@@ -33,5 +33,5 @@ function roll(context, args = []) {
         return Math.floor((Math.random() * sides) + 1);
     };
 
-    Dolores.send(context.channel, `<@${context.author.id}> rolled ${rollDice(sides)}`);
+    Dolores.send(message.channel, `<@${message.author.id}> rolled ${rollDice(sides)}`);
 }

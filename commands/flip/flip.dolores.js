@@ -27,7 +27,7 @@ module.exports = command;
 
 const Dolores = require('../../dolores/Dolores');
 
-function flip(context, args = []) {
+function flip(message, args = []) {
 
     function parseFlip(params) {
         // Default values
@@ -61,20 +61,20 @@ function flip(context, args = []) {
 
     if (thisFlip.type == 'multiple') {
         return Dolores.send(
-            context.channel,
+            message.channel,
             `Out of those ${thisFlip.possibilities.length} options, I have chosen **${result}**`
         );
     };
 
     if (thisFlip.type == 'boolean') {
         return Dolores.send(
-            context.channel,
+            message.channel,
             `My decision on \`${args[0].toString().trim()}\` is **${result}**`
         );
     };
 
     return Dolores.send(
-        context.channel,
-        `${context.author} flipped a coin. The result is **${result}**`
+        message.channel,
+        `${message.author} flipped a coin. The result is **${result}**`
     );
 }

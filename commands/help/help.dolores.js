@@ -19,9 +19,9 @@ module.exports = command;
 const Discord = require('discord.js');
 const Dolores = require('../../dolores/Dolores');
 
-function man(context, args = []) {
+function man(message, args = []) {
 
-    const { commands } = context.client;
+    const { commands } = message.client;
     const embedObj     = new Discord.MessageEmbed();
 
     embedObj.setColor('GREEN');
@@ -47,10 +47,10 @@ function man(context, args = []) {
 
         embedObj.setFooter(`Type ${Dolores.prefix}help [command] for help on specific commands`);
 
-        return Dolores.send(context.channel, embedObj);
+        return Dolores.send(message.channel, embedObj);
     };
 
-    const command = Dolores.getCommand(context.client, args[0]);
+    const command = Dolores.getCommand(message.client, args[0]);
 
     const aliases = command.aliases ?
                         ` (or \`${command.aliases.join('\`, \`')}\`)` :
@@ -90,6 +90,6 @@ function man(context, args = []) {
     if (command.examples.length)embedObj.addField('**Examples:**', parseExamples(command.examples));
     if (command.default)        embedObj.addField(`__**Default (just \`${Dolores.prefix + command.name}\`):**__`, command.default);
 
-    Dolores.send(context.channel || context.dmChannel, embedObj);
+    Dolores.send(message.channel || message.dmChannel, embedObj);
 
 }

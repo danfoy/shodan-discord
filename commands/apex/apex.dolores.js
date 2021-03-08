@@ -28,7 +28,7 @@ const { legends }   = require('../../data/legends.json');
 const Dolores = require('../../dolores/Dolores');
 const Discord = require('discord.js');
 
-function roll(context, args = []) {
+function roll(message, args = []) {
 
     const embedObj = new Discord.MessageEmbed();
 
@@ -44,7 +44,7 @@ function roll(context, args = []) {
             players[1] = args[1] || "Player 2";
             players[2] = args[2] || "Player 3";
         } else {
-            players[0] = `<@${context.author.id}>`;
+            players[0] = `<@${message.author.id}>`;
             players[1] = args[0] || "Player 2";
             players[2] = args[1] || "Player 3";
         }
@@ -107,9 +107,9 @@ function roll(context, args = []) {
 
     function sendEmbed(squadSize, embedObj, playerOne = false) {
         generateRoster(squadSize, embedObj, playerOne);
-        Dolores.send(context.channel, embedObj);
+        Dolores.send(message.channel, embedObj);
         let quip = generateQuip(embedObj);
-        if (quip) Dolores.send(context.channel, quip);
+        if (quip) Dolores.send(message.channel, quip);
     }
 
     /**
@@ -126,7 +126,7 @@ function roll(context, args = []) {
         let taxIndex = -1;
 
         // Find index of first self-tag
-        if (args) tagIndex = args.findIndex(selfTag => selfTag.includes(context.author.id));
+        if (args) tagIndex = args.findIndex(selfTag => selfTag.includes(message.author.id));
 
         // Remove first self-tag from args array, else finished
         if (tagIndex != -1) args.splice(tagIndex, 1)
@@ -183,7 +183,7 @@ function roll(context, args = []) {
 
     // Error - more than 3 squad members (including invoking user)
     if (args[3]) {
-        return Dolores.send(context.channel, 'How am I supposed to generate a squad with more than 3 members? Moron. RTFM.');
+        return Dolores.send(message.channel, 'How am I supposed to generate a squad with more than 3 members? Moron. RTFM.');
     };
 
     // Implied Trios, explicit playerOne mode

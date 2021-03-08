@@ -12,24 +12,24 @@ module.exports = command;
 
 const Dolores = require('../../dolores/Dolores');
 
-function prune(context, args = []) {
+function prune(message, args = []) {
 
     if (args[0] && isNaN(parseInt(args[0]))) {
-        return Dolores.send(context.channel,
-            `Digits only please, <@${context.author.id}>`);
+        return Dolores.send(message.channel,
+            `Digits only please, <@${message.author.id}>`);
     };
 
     const amount = args[0] ? parseInt(args[0]) + 1 : 2;   // Include command message
 
     if (amount > 100) {
-        return Dolores.send(context.channel,
-            `You are pruning too greedily and too deep, <@${context.author.id}>. ` +
+        return Dolores.send(message.channel,
+            `You are pruning too greedily and too deep, <@${message.author.id}>. ` +
             `Knock off at least ${amount - 100} and then we'll see.`);
     };
 
-    context.channel.bulkDelete(amount, true)
+    message.channel.bulkDelete(amount, true)
         .catch((error) => {
             console.error(error);
-            Dolores.send(context.channel, 'Unable to prune messages');
+            Dolores.send(message.channel, 'Unable to prune messages');
         });
 }

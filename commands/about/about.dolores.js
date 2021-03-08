@@ -13,7 +13,7 @@ const Dolores = require('../../dolores/Dolores');
 const Status = require('../../classes/Status');
 const os = require('os');
 
-function about(context, args = []) {
+function about(message, args = []) {
 
     // Load information from the Status class
     const status = new Status;
@@ -26,7 +26,7 @@ function about(context, args = []) {
     host.addField(  '**Host uptime**', `${Dolores.formatSeconds(status.host.uptime)}`);
     host.addField(  '**Shodan instance age**', `${Dolores.formatSeconds(status.process.uptime)}`)
 
-    Dolores.send(context.channel, host);
+    Dolores.send(message.channel, host);
 
     
     // Load information
@@ -45,5 +45,5 @@ function about(context, args = []) {
                     `**${Math.floor(status.host.ram.free / 1024 / 1024)}MB** (excl. cache) ` + 
                     `free of **${Math.floor(status.host.ram.total / 1024 / 1024 / 1024)}GB**`);
 
-    Dolores.send(context.channel, load);
+    Dolores.send(message.channel, load);
 };
