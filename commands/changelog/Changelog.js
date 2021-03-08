@@ -1,4 +1,4 @@
-const Shodan = require('./shodan');
+const Shodan = require('../../classes/shodan');
 
 class Changelog {
     constructor(file) {

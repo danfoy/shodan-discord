@@ -1,8 +1,9 @@
 /* dotenv */      require('dotenv').config();
 
 const fs        = require('fs');
-const Discord   = require('./discord/classes/Discord');
+const Dolores   = require('./dolores/Dolores');
 const Shodan    = require('./classes/shodan');
+const glob      = require('glob');
 
 const Discordjs = require('discord.js');
 
@@ -12,17 +13,23 @@ const { operators,
 const TOKEN     = process.env.TOKEN; // handled by dotenv
 
 const { getCommand } = require('./utils.js');
+const command = require('./dolores/Command.js');
 
 // Setup client
 const client = new Discordjs.Client();
 client.commands = new Discordjs.Collection();
 
-const commandFiles = fs.readdirSync('./discord/commands/')
-    .filter(file => file.endsWith('.js'));
-for (const file of commandFiles) {
-    const command = require(`./discord/commands/${file}`);
-    client.commands.set(command.name, command);
-};
+glob('./**/*.dolores.js', (error, files) => {
+    if (error) return console.error(error);
+    let loadedCommands = [];
+    files.forEach(file => {
+        const command = require(file);
+        client.commands.set(command.name, command);
+        loadedCommands.push(command.name)
+    });
+    console.info(`Dolores loaded ${loadedCommands.length} commands: ${
+        loadedCommands.join(', ')}`);
+});
 
 
 // Login client to Discord
@@ -32,7 +39,7 @@ client.login(TOKEN);
 client.once('ready', () => {
 
     // Log login
-    console.info(`Logged into Discord as ${client.user.tag}`);
+    console.info(`Dolores logged into Discord as ${client.user.tag}`);
 
     // Send a changelog embed if there's a new changelog
     fs.stat(__dirname + '/CHANGELOG.md', (error, stats) => {
@@ -63,7 +70,7 @@ client.once('ready', () => {
 client.on('message', (message) => {
 
     // React with ping command if pinged
-    if (    !message.content.startsWith(Discord.prefix)
+    if (    !message.content.startsWith(Dolores.prefix)
             && message.mentions.has(client.user)
             && message.author != client.user
             && !message.author.bot ){
@@ -73,12 +80,12 @@ client.on('message', (message) => {
     };
 
     // Ignore messages without Discord.prefix or from other bots
-    if (!message.content.startsWith(Discord.prefix) || message.author.bot) return;
+    if (!message.content.startsWith(Dolores.prefix) || message.author.bot) return;
 
 
     // Split message into arguments
     const args = message.content
-        .slice(Discord.prefix.length)           // Remove Discord.prefix from message
+        .slice(Dolores.prefix.length)           // Remove Dolores.prefix from message
         .split(/ +/);                   // Split using spaces as delimiter
 
     // Isolate command part of message
@@ -108,7 +115,7 @@ client.on('message', (message) => {
     if (command.args && !args[0]) {
         message.channel.send([
             `\`${commandName}\` command is missing its argument(s)`,
-            `${message.author.username} you fuckin n00b. RTFM \`${Discord.prefix + 'help ' + commandName }\``
+            `${message.author.username} you fuckin n00b. RTFM \`${Dolores.prefix + 'help ' + commandName }\``
             ]);
         return;
     };
