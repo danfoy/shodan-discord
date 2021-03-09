@@ -1,5 +1,4 @@
 const Command = require('../../dolores/Command');
-const Discord = require('discord.js');
 const command = new Command({
     name: 'status',
     aliases: ['info', 'stats', 'about'],
@@ -9,9 +8,10 @@ const command = new Command({
 command.setAccessLevel('anon');
 module.exports = command;
 
+const Discord = require('discord.js');
 const Dolores = require('../../dolores/Dolores');
 const Status = require('../../classes/Status');
-const os = require('os');
+const { parseSeconds } = require('../../classes/shodan');
 
 function about(message, args = []) {
 
@@ -23,8 +23,8 @@ function about(message, args = []) {
 
     host.setTitle(  `__**${status.host.hostname} on ${status.host.platformType} ` +
                     `${status.host.platformVersion} (${status.host.architecture})**__`);
-    host.addField(  '**Host uptime**', `${Dolores.formatSeconds(status.host.uptime)}`);
-    host.addField(  '**Shodan instance age**', `${Dolores.formatSeconds(status.process.uptime)}`)
+    host.addField(  '**Host uptime**', `${Dolores.formatSeconds(parseSeconds(status.host.uptime))}`);
+    host.addField(  '**Shodan instance age**', `${Dolores.formatSeconds(parseSeconds(status.process.uptime))}`)
 
     Dolores.send(message.channel, host);
 
