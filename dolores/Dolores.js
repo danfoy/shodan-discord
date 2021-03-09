@@ -1,12 +1,10 @@
 const Discordjs = require('discord.js');
 const Shodan    = require('../classes/shodan');
 
-class Discord {
+class Dolores {
     constructor() {
         this.prefix = this.getPrefix();
     };
-
-    MessageEmbed = require('./MessageEmbed');
 
     send(recipient, content) {
         if (Array.isArray(content)) {
@@ -117,4 +115,4 @@ class Discord {
     }
 };
 
-module.exports = new Discord;
+module.exports = new Dolores;
