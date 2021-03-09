@@ -50,7 +50,7 @@ function man(message, args = []) {
         return Dolores.send(message.channel, embedObj);
     };
 
-    const command = Dolores.getCommand(message.client, args[0]);
+    const command = Dolores.getCommand(args[0]);
 
     const aliases = command.aliases ?
                         ` (or \`${command.aliases.join('\`, \`')}\`)` :

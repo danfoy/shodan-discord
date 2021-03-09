@@ -11,10 +11,10 @@
  * @returns {Command} Dolores#Command object
  * @memberof Dolores
  */
-function getCommand(target, commandName) {
+function getCommand(commandName) {
     const command = 
-        target.commands.get(commandName) ||
-        target.commands.find( (cmd) =>
+        this.commands.get(commandName) ||
+        this.commands.find( (cmd) =>
             cmd.aliases &&
             cmd.aliases.includes(commandName)
         );
