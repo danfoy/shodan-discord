@@ -7,6 +7,7 @@ class Dolores {
     getInlineReplyParent    = require('./getInlineReplyParent');
     generateQuoteEmbed      = require('./generateQuoteEmbed');
     getPrefix               = require('./getPrefix');
+    loadCommands            = require('./loadCommands');
     getCommand              = require('./getCommand');
     formatSeconds           = require('./formatSeconds');
 
@@ -15,6 +16,7 @@ class Dolores {
 
     // Properties
     prefix = this.getPrefix();
+    commands = this.loadCommands('/commands/**/*.dolores.js');
 
 };
 

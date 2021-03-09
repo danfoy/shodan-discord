@@ -3,7 +3,6 @@
 const fs        = require('fs');
 const Dolores   = require('./dolores/Dolores');
 const Shodan    = require('./classes/shodan');
-const glob      = require('glob');
 
 const Discordjs = require('discord.js');
 
@@ -12,24 +11,10 @@ const { operators,
 
 const TOKEN     = process.env.TOKEN; // handled by dotenv
 
-const { getCommand } = require('./utils.js');
-const command = require('./dolores/Command.js');
+const { getCommand } = Dolores;
 
 // Setup client
 const client = new Discordjs.Client();
-client.commands = new Discordjs.Collection();
-
-glob('./**/*.dolores.js', (error, files) => {
-    if (error) return console.error(error);
-    let loadedCommands = [];
-    files.forEach(file => {
-        const command = require(file);
-        client.commands.set(command.name, command);
-        loadedCommands.push(command.name)
-    });
-    console.info(`Dolores loaded ${loadedCommands.length} commands: ${
-        loadedCommands.join(', ')}`);
-});
 
 
 // Login client to Discord
@@ -50,7 +35,7 @@ client.once('ready', () => {
         if (changelogTimer > 120) return;
 
         // Load the changelog command for use
-        const changelogCmd = getCommand(client, 'changelog');
+        const changelogCmd = getCommand(Dolores, 'changelog');
 
         // Loop through designated channels in {servers} from config.json
         servers.forEach( server => {
@@ -75,7 +60,7 @@ client.on('message', (message) => {
             && message.author != client.user
             && !message.author.bot ){
 
-        const ping = getCommand(client, 'ping');
+        const ping = getCommand(Dolores, 'ping');
         return ping.execute(message);
     };
 
@@ -93,7 +78,7 @@ client.on('message', (message) => {
         .toLowerCase();                 // Normalise case
 
     // Get the command object itself
-    const command = getCommand(client, commandName);
+    const command = getCommand(Dolores, commandName);
 
     // Check command exists
     if (!command) {

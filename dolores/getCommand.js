@@ -6,15 +6,15 @@
  * For consistency with the discord.js library, commands are attached to the
  * client using their Collection helper, which in turn extends ES6 Map.
  *
- * @param {Client} client discord.js client
+ * @param {Class} target Class hosting the commands
  * @param {String} commandName Command to search for
  * @returns {Command} Dolores#Command object
  * @memberof Dolores
  */
-function getCommand(client, commandName) {
+function getCommand(target, commandName) {
     const command = 
-        client.commands.get(commandName) ||
-        client.commands.find( (cmd) =>
+        target.commands.get(commandName) ||
+        target.commands.find( (cmd) =>
             cmd.aliases &&
             cmd.aliases.includes(commandName)
         );

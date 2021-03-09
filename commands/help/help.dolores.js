@@ -21,7 +21,7 @@ const Dolores = require('../../dolores/Dolores');
 
 function man(message, args = []) {
 
-    const { commands } = message.client;
+    const { commands } = Dolores;
     const embedObj     = new Discord.MessageEmbed();
 
     embedObj.setColor('GREEN');
