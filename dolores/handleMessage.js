@@ -1,3 +1,4 @@
+const { operators } = require('../config.json');
 
 function handleMessage(client, message) {
 
