@@ -7,37 +7,34 @@ const { operators, servers } = require('../config.json');
 
 function init() {
 
-    const { handleMessage } = this;
+    const Dolores = this;
+    const { getCommand, handleMessage } = this;
 
     const client = new Discordjs.Client();
+    const path = require('path');
     client.login(TOKEN);
 
     // Actions to perform on connection
     client.once('ready', () => {
-        
+
         console.info(`Dolores logged into Discord as ${client.user.tag}`);
 
-        // Send a changelog embed if there's a new changelog
-        // fs.stat(__dirname + '/../CHANGELOG.md', (error, stats) => {
-        //     if (error) return console.error(error);
-            
-        //     // Check whether changelog is new
-        //     const changelogTimer = Math.floor((new Date - stats.mtime) / 1000);
-        //     if (changelogTimer > 120) return;
+        // Load the changelog command for use
+        const Changelog = require(path.dirname(require.main.filename) + '/commands/changelog/Changelog.js');
+        const changelog = new Changelog();
+        console.log(`Changelog: ${Object.keys(changelog)}`);
+        console.log(`Changelog age: ${changelog.ageInSeconds()}s`);
+        const changelogCmd = getCommand(Dolores, 'changelog');
 
-        //     // Load the changelog command for use
-        //     const changelogCmd = getCommand(Dolores, 'changelog');
-
-        //     // Loop through designated channels in {servers} from config.json
-        //     servers.forEach( server => {
-        //         if (!client.channels.cache.get(server.testing)) return;
-        //         client.channels.fetch(server.testing)
-        //             .then(channel => {
-        //                 console.log(`Sending changelog to ${channel.name} as ${channel.id}`);
-        //                 changelogCmd.execute({channel});
-        //             }) 
-        //             .catch(error => console.error(error));
-        //     });
+        // Loop through designated channels in {servers} from config.json
+        // servers.forEach( server => {
+        //     if (!client.channels.cache.get(server.testing)) return;
+        //     client.channels.fetch(server.testing)
+        //         .then(channel => {
+        //             console.log(`Sending changelog to ${channel.name} as ${channel.id}`);
+        //             changelogCmd.execute({channel});
+        //         }) 
+        //         .catch(error => console.error(error));
         // });
     });
 

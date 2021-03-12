@@ -1,19 +1,22 @@
 const Shodan = require('../../classes/shodan');
 
 class Changelog {
-    constructor(file) {
-        this.file = Shodan.getFile(file);
-        this.all = this.parse(file);
+    constructor() {
+        this.file = Shodan.getFile('../CHANGELOG.md');
+        this.age = this.ageInSeconds(this.file);
+        this.all = this.parse(this.file);
         this.header = this.all.header;
         this.versions = {
             current: this.all.versions[0],
             byOffset: this.getByOffset()
-        }
-    }
+        };
+    };
 
+    ageInSeconds = require('./ageInSeconds');
+    
     getByOffset(offset) {
         return this.all.versions[offset];
-    }
+    };
 
     /**
      * Take a hierarchically-structured CHANGELOG.md and parse it into an Object
@@ -21,7 +24,7 @@ class Changelog {
      * @param  {file}   file    CHANGELOG.md loaded via nodejs
      * @return {Object}         An Object representation of `file`
      */
-    parse(file) {
+    parse() {
 
         // Split file into array at 2nd-level headings (versions)
         let changelogArray = this.file
