@@ -1,5 +1,4 @@
 const fs = require('fs');
-const path = require('path');
 
 /**
  * Get the age of the changelog. This function operates directly on the
@@ -9,14 +8,9 @@ const path = require('path');
  *
  * @returns {Number} Seconds since the changelog file was touched
  */
-async function ageInSeconds(file) {
-    const result = await fs.stat('./CHANGELOG.md', (error, stats) => {
-        if (error) return console.error(error);
-        const age = Math.floor((new Date - stats.mtime) / 1000);
-        console.log(`Internal ageInSeconds value: ${age}`);
-        return age;
-    });
-    return result;
+ function ageInSeconds() {
+    let fileStats = fs.statSync(process.cwd() + '/CHANGELOG.md');
+    return Math.floor((new Date - fileStats.mtime) / 1000);
 };
 
 module.exports = ageInSeconds;

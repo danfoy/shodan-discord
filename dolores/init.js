@@ -1,7 +1,8 @@
 /* dotenv */      require('dotenv').config();
-const fs        = require('fs');
 const Discordjs = require('discord.js');
 const TOKEN     = process.env.TOKEN; // handled by dotenv
+const path = require('path');
+const Changelog = require('../commands/changelog');
 
 const { operators, servers } = require('../config.json');
 
@@ -11,7 +12,6 @@ function init() {
     const { getCommand, handleMessage } = this;
 
     const client = new Discordjs.Client();
-    const path = require('path');
     client.login(TOKEN);
 
     // Actions to perform on connection
@@ -20,11 +20,9 @@ function init() {
         console.info(`Dolores logged into Discord as ${client.user.tag}`);
 
         // Load the changelog command for use
-        const Changelog = require(path.dirname(require.main.filename) + '/commands/changelog/Changelog.js');
         const changelog = new Changelog();
-        console.log(`Changelog: ${Object.keys(changelog)}`);
-        console.log(`Changelog age: ${changelog.ageInSeconds()}s`);
-        const changelogCmd = getCommand(Dolores, 'changelog');
+
+        //const changelogCmd = getCommand(Dolores, 'changelog');
 
         // Loop through designated channels in {servers} from config.json
         // servers.forEach( server => {

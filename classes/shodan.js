@@ -8,6 +8,10 @@ const fs = require('fs');
 class Shodan {
     constructor() {};
 
+    get rootPath() {
+        return '/'
+    }
+
     /**
      * Load a file from the filesystem.
      *
@@ -19,11 +23,13 @@ class Shodan {
      * @memberof Shodan
      */
     static getFile(path) {
-        const file = fs.readFileSync(
+        return fs.readFileSync(
             `${__dirname}/${path}`,
             'utf8',
-            (err, file) => { if (err) throw err });
-        return file;
+            (err, file) => {
+                if (err) throw err;
+                return file;
+            });
     };
 
     /**
