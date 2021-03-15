@@ -4,11 +4,18 @@ const command = new Dolores.Command({
     name:           'changelog',
     aliases:        ['version', 'updates', 'update', 'changes'],
     description:    'Shows recent updates to Shodan',
-    standalone:     'Show the changelog for the current version',
+    standalone:     'Show the changelog for the current version, excluding ' +
+                    'under-the-hood changes',
     execute: changelog
 });
-command.addOption( '-[number]',  '-n changelogs prior to the current version');
-command.addExample('version -1', 'Show the changelog for the previous version');
+command.addOption(  '-[number]', 'changelog `-n` prior to the current version');
+command.addExample( 'version -1','Show the changelog for the previous version');
+command.addOption(  'v[#.#.#]', 'show changelog for a specific release');
+command.addExample( 'version v0.5.0', 'Show the changelog for version v0.5.0');
+command.addOption(  '[summary/standard/full]', 'Show summary only, features ' +
+                    'and bugfixes, or all changes including under-the-hood');
+command.addExample( 'changelog -3 full', 'Show all changes in the version ' +
+                    'three releases prior to the current version');
 
 command.setAccessLevel('anon');
 
