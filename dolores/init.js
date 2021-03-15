@@ -25,7 +25,7 @@ function init() {
         const changelog = new Changelog();
 
         // Check if there is a new changelog
-        if (changelog.ageInSeconds() > 120) {
+        if (changelog.ageInSeconds() < 120) {
             const changelogCmd = Dolores.getCommand('changelog');
 
             //Loop through designated channels in {servers} from config.json
