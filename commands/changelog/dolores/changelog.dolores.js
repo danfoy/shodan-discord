@@ -59,14 +59,14 @@ function changelog(message, args = []) {
 
     };
 
+    const scope = parseArgs(args, ['summary', 'full']);
+
     const changelogVersion = getChangelogVersion(changelog, args);
 
     // getChangelogVersion returns a string message on failure
     if (typeof changelogVersion != 'object') {
         return message.channel.send(changelogVersion);
     };
-
-    const scope = parseArgs(args, ['summary', 'full']);
 
     // generateEmbeds returns an array of embeds, so use Dolores.send helper
     // method to send them out sequentially
