@@ -10,7 +10,7 @@
 function getChangelogVersion(changelog, args) {
 
     // Return the current version if no arguments provided
-    if (!args[0]) return changelog.current;
+    if (!args[0] || args.includes('current')) return changelog.current;
     
     // Search by offset if argument starts with `-`
     if (args[0].startsWith('-')) { 
