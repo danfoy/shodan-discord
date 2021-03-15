@@ -1,5 +1,5 @@
-const Command = require('../../Dolores/Command');
-const command = new Command({
+const Dolores = require('../../dolores');
+const command = new Dolores.Command({
     name: 'roll',
     aliases: ['dice', 'd'],
     description: 'Generate a random number. Roll a dice.',
@@ -12,8 +12,6 @@ command.addExample('roll 100', 'Random number between 1-100');
 command.addExample('d 20', 'Roll a 20-sided dice');
 
 module.exports = command;
-
-const Dolores = require('../../dolores/Dolores');
 
 function roll(message, args = []) {
 

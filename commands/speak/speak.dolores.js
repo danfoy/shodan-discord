@@ -1,5 +1,5 @@
-const Command = require('../../Dolores/Command');
-const command = new Command({
+const Dolores = require('../../dolores');
+const command = new Dolores.Command({
     name: 'say',
     description: 'Talk via Shodan',
     aliases: ['speak'],
@@ -9,7 +9,6 @@ command.setAccessLevel('operator');
 module.exports = command;
 
 const {servers} = require('../../config.json');
-const Dolores = require('../../dolores/Dolores');
 
 function speak(message, args = []) {
 

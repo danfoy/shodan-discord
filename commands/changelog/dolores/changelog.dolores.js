@@ -1,4 +1,4 @@
-const Dolores = require('../../../dolores/Dolores');
+const Dolores = require('../../../dolores');
 const Changelog = require('..');
 const command = new Dolores.Command({
     name:           'changelog',

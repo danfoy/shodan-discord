@@ -1,6 +1,5 @@
-const Command = require('../../dolores/Command');
-
-const command = new Command({
+const Dolores = require('../../dolores');
+const command = new Dolores.Command({
     name: 'help',
     aliases: ['man'],
     description: 'Displays a list of commands or information on a specific command',
@@ -17,7 +16,6 @@ command.addExample('help roll', 'Show manual for the roll command');
 module.exports = command;
 
 const Discord = require('discord.js');
-const Dolores = require('../../dolores/Dolores');
 
 function man(message, args = []) {
 

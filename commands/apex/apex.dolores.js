@@ -1,5 +1,5 @@
-const Command = require('../../dolores/Command');
-const command = new Command({
+const Dolores = require('../../dolores');
+const command = new Dolores.Command({
     name: 'apex',
     aliases: ['legends'],
     description: 'Generate a randomized Apex Legends squad',
@@ -25,7 +25,6 @@ command.addExample('apex solo Delores', 'Generates a solo squad for player `Delo
 module.exports = command;
 
 const { legends }   = require('../../data/legends.json');
-const Dolores = require('../../dolores/Dolores');
 const Discord = require('discord.js');
 
 function roll(message, args = []) {

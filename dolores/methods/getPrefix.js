@@ -7,7 +7,7 @@
  * @memberof Dolores
  */
 function getPrefix() {
-    const { prefix } = require('../config.json');
+    const { prefix } = require('../../config.json');
     return prefix; 
 };
 

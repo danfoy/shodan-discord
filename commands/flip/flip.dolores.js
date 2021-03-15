@@ -1,5 +1,5 @@
-const Command = require('../../dolores/Command');
-const command = new Command({
+const Dolores = require('../../dolores');
+const command = new Dolores.Command({
     name: 'flip',
     aliases: ['which', 'choose', 'decide'],
     description:    'Flip a coin, get a yes/no answer to a single question,' +
@@ -24,8 +24,6 @@ command.addExample( 'decide to crush your enemies, see them driven before you, '
                     'Determine [what is best in life](https://www.youtube.com/watch?v=Oo9buo9Mtos)');
 
 module.exports = command;
-
-const Dolores = require('../../dolores/Dolores');
 
 function flip(message, args = []) {
 
