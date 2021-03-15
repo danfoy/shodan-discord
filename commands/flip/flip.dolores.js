@@ -2,9 +2,9 @@ const Dolores = require('../../dolores');
 const command = new Dolores.Command({
     name: 'flip',
     aliases: ['which', 'choose', 'decide'],
-    description:    'Flip a coin, get a yes/no answer to a single question,' +
-                    'or choose between multiple options.\n\n' +
-                    'Ask a single question for a yes/no answer, or provide multiple options ' +
+    description:    'Flip a coin, get a yes/no answer to a single question, ' +
+                    'or choose between multiple options.',
+    detail:         'Ask a single question for a yes/no answer, or provide multiple options ' +
                     'to choose between them. I will ignore the words `coin`, `whether`, ' +
                     'and `between` when they appear at the start of the sentence.',
     standalone: 'Flip a coin',
