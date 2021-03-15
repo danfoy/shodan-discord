@@ -16,10 +16,11 @@ class Command {
      * @memberof Command
      */
 
-    constructor({name, aliases, description, options, examples, standalone, execute}) {
+    constructor({name, aliases, description, detail, options, examples, standalone, execute}) {
         this.name           = name          || false;
         this.aliases        = aliases       || false;
         this.description    = description   || false;
+        this.detail         = detail        || false;
         this.options        = options       || [];
         this.examples       = examples      || [];
         this.default        = standalone    || false;

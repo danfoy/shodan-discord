@@ -50,8 +50,12 @@ function man(message, args = []) {
 
     const command = Dolores.getCommand(args[0]);
 
-    const aliases = command.aliases ?
-                        ` (or \`${command.aliases.join('\`, \`')}\`)` :
+    // We will be doing some transforms, so we need to clone the command so that
+    // changes we make don't affect the original commands.
+    const cmd = { ...command };
+
+    const aliases = cmd.aliases ?
+                        ` (or \`${cmd.aliases.join('\`, \`')}\`)` :
                         '';
 
     /**
@@ -81,12 +85,17 @@ function man(message, args = []) {
         return output;
     };
 
-    embedObj.setTitle(`__\`${Dolores.prefix + command.name}\`` + aliases + '__');
-    if (command.description)    embedObj.setDescription(command.description + '\n\u200b\n');
-    if (command.options.length) embedObj.addField('**Options:**', parseOptions(command.options));
-    if (command.usage)          embedObj.addField('**Usage:**', command.usage + '\n\u200b\n');
-    if (command.examples.length)embedObj.addField('**Examples:**', parseExamples(command.examples));
-    if (command.default)        embedObj.addField(`__**Default (just \`${Dolores.prefix + command.name}\`):**__`, command.default);
+    // If the command has a `detail` field, append to the description
+    if (cmd.detail) {
+        cmd.description = cmd.description +'\n\u200b\n'+ cmd.detail;
+    };
+
+    embedObj.setTitle(`__\`${Dolores.prefix + cmd.name}\`` + aliases + '__');
+    if (cmd.description)    embedObj.setDescription(cmd.description + '\n\u200b\n')
+    if (cmd.options.length) embedObj.addField('**Options:**', parseOptions(cmd.options));
+    if (cmd.usage)          embedObj.addField('**Usage:**', cmd.usage + '\n\u200b\n');
+    if (cmd.examples.length)embedObj.addField('**Examples:**', parseExamples(cmd.examples));
+    if (cmd.default)        embedObj.addField(`__**Default (just \`${Dolores.prefix + cmd.name}\`):**__`, cmd.default);
 
     Dolores.send(message.channel || message.dmChannel, embedObj);
 

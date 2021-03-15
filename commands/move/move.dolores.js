@@ -2,10 +2,13 @@ const Dolores = require('../../dolores');
 const command = new Dolores.Command({
     name:           'move',
     aliases:        ['crosspost', 'quote', 'copy'],
-    description:    'Move a post to another channel by doing an inline reply' +
-                    'to that message with this command. If the command ' + 
-                    'issued is `move` then the original will be deleted. ' +
-                    'Otherwise, it will be copied.',
+    description:    'Move a post to another channel, or highlight it in this ' +
+                    'one',
+    detail:         'The command must be issued as an inline reply to the ' +
+                    'message you wish to move or copy. If the command issued ' + 
+                    'is `move` then the original will be deleted. Otherwise, ' +
+                    'it will be copied. The channel should be tagged as a ' +
+                    '\'mention\' using the `#` character.',
     execute: move
 });
 
