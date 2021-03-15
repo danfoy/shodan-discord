@@ -1,9 +1,9 @@
 /* dotenv */      require('dotenv').config();
 const Discordjs = require('discord.js');
 const TOKEN     = process.env.TOKEN; // handled by dotenv
-const Changelog = require('../commands/changelog');
+const Changelog = require('../../commands/changelog');
 
-const { servers } = require('../config.json');
+const { servers } = require('../../config.json');
 
 /**
  * Initializes Dolores
@@ -11,7 +11,7 @@ const { servers } = require('../config.json');
  */
 function init() {
 
-    const Dolores = require('./Dolores');
+    const Dolores = require('../');
 
     const client = new Discordjs.Client();
     client.login(TOKEN);

@@ -1,6 +1,5 @@
-const Command = require('../../dolores/Command');
-
-const command = new Command ({
+const Dolores = require('../../dolores');
+const command = new Dolores.Command ({
     name: 'ping',
     description: 'Make me respond on command like some kind of perfoming animal',
     standalone: 'Display a random quote',
@@ -13,7 +12,6 @@ command.addExample('quote list', 'Show a list of all available quotes');
 command.addExample('ping 7', 'Respond with quote #7');
 module.exports = command;
 
-const Dolores = require('../../dolores/Dolores');
 const Discord = require('discord.js');
 
 function quote(message, args = []) {

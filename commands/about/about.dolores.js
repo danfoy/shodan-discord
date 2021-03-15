@@ -1,5 +1,5 @@
-const Command = require('../../dolores/Command');
-const command = new Command({
+const Dolores = require('../../dolores');
+const command = new Dolores.Command({
     name: 'status',
     aliases: ['info', 'stats', 'about'],
     description: "Display information about Shodan and her host system's statistics",
@@ -9,7 +9,6 @@ command.setAccessLevel('anon');
 module.exports = command;
 
 const Discord = require('discord.js');
-const Dolores = require('../../dolores/Dolores');
 const Status = require('../../classes/Status');
 const { parseSeconds } = require('../../classes/shodan');
 

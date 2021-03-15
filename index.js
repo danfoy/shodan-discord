@@ -1,3 +1,3 @@
-const Dolores = require('./dolores/Dolores');
+const Dolores = require('./dolores');
 
 Dolores.init();

@@ -1,5 +1,5 @@
-const Command = require('../../Dolores/Command');
-const command = new Command({
+const Dolores = require('../../dolores');
+const command = new Dolores.Command({
     name: 'prune',
     aliases: ['purge', 'delete', 'del', 'clear'],
     description: 'Delete a specified number of messages from the server',
@@ -9,8 +9,6 @@ const command = new Command({
 command.setAccessLevel('admin');
 command.addOption('[number] (between 2 and 99)', 'Delete this many posts');
 module.exports = command;
-
-const Dolores = require('../../dolores/Dolores');
 
 function prune(message, args = []) {
 

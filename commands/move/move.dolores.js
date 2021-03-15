@@ -1,5 +1,5 @@
-const Command = require('../../dolores/Command');
-const command = new Command({
+const Dolores = require('../../dolores');
+const command = new Dolores.Command({
     name:           'move',
     aliases:        ['crosspost', 'quote', 'copy'],
     description:    'Move a post to another channel by doing an inline reply' +
@@ -28,8 +28,6 @@ command.addExample( 'quote', 'Copy this message to the bottom of the ' +
 command.setAccessLevel('anon');
 
 module.exports = command;
-
-const Dolores = require('../../dolores/Dolores');
 
 function move(message, args=[], commandName) {
 
