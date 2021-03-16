@@ -9,9 +9,9 @@
 
     let changelogFile = Shodan.getFile('../CHANGELOG.md');
 
-    // Split file into array at 2nd-level headings (versions)
+    // Split file into array of separate versions
     let changelogArray = changelogFile
-        .split(/\n## /);
+        .split(/\n#+ (?=\[|\d)/);
 
     // Remove messages from top of file
     let header = changelogArray
@@ -33,26 +33,32 @@
             .split(/\n### /);
 
         // Shift title from array into new variable
-        let versionTitle = sections
+        let versionTitleHeading = sections
             .shift()
             .toString()
             .trim();
 
         // Split title into version and date components
-        versionTitle = versionTitle
-            .replace(/[(|)]/g, '')
-            .split(/ +/)
+        let versionTitleArray = versionTitleHeading
+            .split(/ +/);
+
+        // Remove links from heading (Discord doesn't support links in titles)
+        let versionTitleTag = versionTitleArray[0]
+            .replace(/[\[|\]]/g, '')
+            .replace(/\(.*\)/g, '')
+
 
         // Split date component into array for Date construction
-        versionTitle[1] = versionTitle[1]
-            .split(/-/)
+        let versionTitleDate = versionTitleArray[1]
+            .replace(/[(|)]/g, '')
+            .split(/-/);
 
         let thisVersion = {
-            title: versionTitle[0],
+            title: versionTitleTag,
             date: new Date(
-                versionTitle[1][0],
-                versionTitle[1][1] - 1, // Month is 0-indexed 🤨
-                versionTitle[1][2]
+                versionTitleDate[0],
+                versionTitleDate[1] - 1, // Month is 0-indexed 🤨
+                versionTitleDate[2]
                 ),
             changes: []
         };
