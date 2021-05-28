@@ -86,7 +86,8 @@ function roll(message, args = []) {
                 'Wattson': `Make your father proud, ${player}`,
                 'Pathfinder': `You won't find your maker, ${player}. I see no other gods up here but me.`,
                 'Bloodhound': `May the Allfather bless ${player} in slatra`,
-                'Revenant': `Bring me their skinsuits, ${player}`
+                'Revenant': `Bring me their skinsuits, ${player}`,
+                'Valkyrie': `${player}'s got you in the pipe, 5 by 5`
             };
 
             // Match legends with remarks
